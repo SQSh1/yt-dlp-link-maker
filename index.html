@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+  <meta charset="UTF-8">
+  <title>ساخت لینک yt-dlp</title>
+</head>
+<body>
+  <h2>لینک یوتیوب وارد کن:</h2>
+  <input type="text" id="url" placeholder="لینک ویدیو یا پلی‌لیست">
+  <br><br>
+  <select id="format">
+    <option value="bestvideo[height<=720]+bestaudio">ویدیو 720p</option>
+    <option value="bestvideo[height<=1080]+bestaudio">ویدیو 1080p</option>
+    <option value="bestaudio">فقط صدا (mp3)</option>
+    <option value="best[filesize<50M]">کم‌حجم (زیر ۵۰MB)</option>
+  </select>
+  <br><br>
+  <button onclick="generate()">ایجاد دستور</button>
+
+  <h3>دستور نهایی برای Termux:</h3>
+  <pre id="result"></pre>
+
+  <script src="main.js"></script>
+</body>
+</html>

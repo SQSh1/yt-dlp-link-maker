@@ -1,32 +1,60 @@
-yt-dlp Link Maker
-A lightweight, browser-based tool designed to generate yt-dlp download commands for YouTube videos and playlists. Optimized for Termux on Android and compatible with Chromium-based browsers like Cromite.
-Features
+# yt-dlp Link Maker
 
-Automatic Link Detection: Identifies whether the input is a single video or a playlist.
-Command Generation: Produces clean, ready-to-use yt-dlp commands for Termux.
-Client-Side Operation: Runs entirely in the browser with no server or data collection.
-Mobile-Friendly: Features a lightweight, intuitive UI tailored for mobile devices.
+A simple browser-based tool to generate `yt-dlp` download commands for YouTube videos and playlists.  
+Optimized for **Termux** on Android and works perfectly in Chromium-based browsers like **Cromite**.
 
-How to Use
+---
 
-Paste a YouTube video or playlist link into the input field.
-Select whether to download a single video or the entire playlist.
-Click the Generate button to create the yt-dlp command.
-Copy the command and paste it into Termux to initiate the download.
+## Features
 
-Example Output
+- Automatically detects whether the link is a single video or a playlist  
+- Generates a clean `yt-dlp` command ready to copy and paste into Termux  
+- Fully client-side â€“ no server, no data collection  
+- Designed for mobile-first use with a lightweight and responsive UI
+
+---
+
+## How to Use
+
+1. Paste a YouTube video or playlist URL into the input field.  
+2. Choose whether you want to download a single video or the entire playlist.  
+3. Click the **Generate** button.  
+4. Copy the generated command and paste it into **Termux** to start downloading.
+
+---
+
+## Output Example
+
+```bash
 yt-dlp "https://youtu.be/abc123"
+```
 
-Planned Features
+---
 
-Quality and format options (e.g., 720p, audio-only).
-Custom output directory support (e.g., /storage/emulated/0/Download/Termux).
-Dark mode interface.
-Auto-copy to clipboard functionality.
+## Planned Features
 
-Live Demo
-Try the tool live on GitHub Pages:yt-dlp-link-maker
-License
-This project is for educational purposes only. Please adhere to YouTube's Terms of Service.
-Author
-Created by SQ.
+- Quality and format selection (e.g., 720p, audio-only)  
+- Custom output directory support (e.g., `/storage/emulated/0/Download/Termux`)  
+- Dark mode interface  
+- Auto-copy to clipboard functionality
+
+---
+
+## Live Demo
+
+Try the tool live on **GitHub Pages**:  
+[yt-dlp-link-maker](https://sqsh1.github.io/yt-dlp-link-maker/)
+
+---
+
+## License
+
+This project is for educational use only. Please respect [YouTube's Terms of Service](https://www.youtube.com/static?template=terms).
+
+---
+
+## Author
+
+Created by [SQ](https://github.com/SQSh1).
+
+---

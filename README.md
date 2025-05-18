@@ -17,7 +17,8 @@ Optimized for **Termux** on Android and works perfectly in Chromium-based browse
 
 ## Output Example
 ```bash
-yt-dlp "https://youtu.be/abc123" ```\
+yt-dlp "https://youtu.be/abc123"
+
 
 ## Coming Soon
 - Quality and format selection (e.g. 720p, audio-only)

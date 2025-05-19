@@ -1,100 +1,139 @@
 <!DOCTYPE html>
-<html lang="fa">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>ساخت دستور yt-dlp</title>
+  <title>yt-dlp Link Maker</title>
   <style>
     body {
-  font-family: sans-serif;
-  background: #f9f9f9;
-  padding: 20px;
-  text-align: center;
-  direction: rtl;
-}
-
-input, select, button, textarea {
-  margin: 10px auto;
-  display: block;
-  padding: 12px;
-  font-size: 16px;
-  width: 90%;
-  max-width: 500px;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-  box-sizing: border-box;
-}
-
-button {
-  background-color: #4CAF50;
-  color: white;
-  border: none;
-}
-
-button:hover {
-  background-color: #45a049;
-}
-
-textarea {
-  height: 120px;
-  resize: vertical;
-}
-
-.output-box {
-  background: #eaeaea;
-  padding: 10px;
-  border-radius: 8px;
-  position: relative;
-  margin-top: 15px;
-  word-wrap: break-word;
-  text-align: left;
-  direction: ltr;
-  font-family: monospace;
-  white-space: pre-wrap;
-}
-
+      font-family: sans-serif;
+      background-color: #1e1e2f;
+      color: #fff;
+      text-align: center;
+      padding: 20px;
+    }
+    h1 {
+      margin-bottom: 10px;
+    }
+    textarea {
+      width: 100%;
+      max-width: 800px;
+      height: 150px;
+      background: #2a2a40;
+      color: #fff;
+      border: none;
+      padding: 10px;
+      font-family: monospace;
+      margin-bottom: 15px;
+      resize: vertical;
+    }
+    .formats-container {
+      max-width: 800px;
+      margin: 0 auto 20px;
+      background: #2b2b45;
+      padding: 10px;
+      border-radius: 8px;
+      max-height: 300px;
+      overflow-y: auto;
+      text-align: left;
+    }
+    .format-item {
+      margin: 5px 0;
+    }
+    .output-box {
+      background: #333;
+      padding: 10px;
+      border-radius: 6px;
+      font-family: monospace;
+      display: inline-block;
+      max-width: 90%;
+      word-wrap: break-word;
+    }
+    button {
+      padding: 8px 20px;
+      font-size: 16px;
+      margin: 10px 5px;
+      border: none;
+      border-radius: 6px;
+      background: #00bfa6;
+      color: #000;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #00a08c;
+    }
   </style>
 </head>
 <body>
-  <h2>ابزار ساخت دستور yt-dlp</h2>
-  <textarea id="ytInfo" placeholder="خروجی دستور yt-dlp -F را اینجا Paste کنید"></textarea>
-  <button onclick="extractFormats()">استخراج کیفیت‌ها</button>
 
-  <select id="formatSelect">
-    <option value="">لطفاً کیفیت را انتخاب کنید</option>
-  </select>
-<!-- ... ادامه ... -->
-<script>
-  function extractFormats() {
-    const info = document.getElementById("ytInfo").value;
-    const lines = info.split("\n");
-    const formats = [];
+  <h1>yt-dlp Link Maker</h1>
 
-    lines.forEach(line => {
-      // استخراج خطوطی که با کد عددی شروع می‌شوند
-      const match = line.match(/^(\d{1,4})(\+?\d{0,4})\s+(\w+)\s+(.*)$/);
-      if (match) {
-        const code = match[1] + (match[2] ? match[2] : "");
-        const ext = match[3];
-        const desc = match[4].trim();
-        formats.push({ id: code, label: `${code} - ${desc}` });
+  <textarea id="inputBox" placeholder="Paste yt-dlp -F output here..."></textarea>
+  <br>
+  <div class="formats-container" id="formatsContainer">
+    <!-- Format checkboxes will appear here -->
+  </div>
+
+  <button onclick="generateCommand()">ساخت دستور yt-dlp</button>
+
+  <div style="margin-top:20px">
+    <h3>دستور نهایی:</h3>
+    <div class="output-box" id="outputBox">در انتظار انتخاب کیفیت...</div>
+    <br>
+    <button onclick="copyCommand()">کپی</button>
+  </div>
+
+  <script>
+    const inputBox = document.getElementById("inputBox");
+    const formatsContainer = document.getElementById("formatsContainer");
+    const outputBox = document.getElementById("outputBox");
+
+    inputBox.addEventListener("input", () => {
+      formatsContainer.innerHTML = "";
+      const lines = inputBox.value.trim().split("\n");
+
+      lines.forEach(line => {
+        const match = line.match(/^(\d+|\w+)-?.*?\|/);
+        if (match) {
+          const code = match[1];
+          const checkbox = document.createElement("input");
+          checkbox.type = "checkbox";
+          checkbox.value = code;
+          checkbox.id = "format-" + code;
+
+          const label = document.createElement("label");
+          label.htmlFor = checkbox.id;
+          label.textContent = " " + line.trim();
+
+          const div = document.createElement("div");
+          div.className = "format-item";
+          div.appendChild(checkbox);
+          div.appendChild(label);
+
+          formatsContainer.appendChild(div);
+        }
+      });
+    });
+
+    function generateCommand() {
+      const checkboxes = formatsContainer.querySelectorAll("input[type='checkbox']:checked");
+      const selectedFormats = Array.from(checkboxes).map(cb => cb.value);
+      if (selectedFormats.length === 0) {
+        outputBox.textContent = "لطفاً حداقل یک کیفیت انتخاب کنید.";
+        return;
       }
-    });
 
-    const select = document.getElementById("formatSelect");
-    select.innerHTML = "";
-    formats.forEach(f => {
-      const option = document.createElement("option");
-      option.value = f.id;
-      option.textContent = f.label;
-      select.appendChild(option);
-    });
-
-    if (formats.length === 0) {
-      alert("هیچ کیفیتی یافت نشد. لطفاً خروجی کامل yt-dlp -F را Paste کنید.");
+      const formatString = selectedFormats.join("+");
+      const command = `yt-dlp -f "${formatString}" <video_url>`;
+      outputBox.textContent = command;
     }
-  }
 
-  // تابع‌های قبلی مثل buildCommand و copyCommand بدون تغییر باقی می‌مانند
+    function copyCommand() {
+      const text = outputBox.textContent;
+      navigator.clipboard.writeText(text).then(() => {
+        alert("دستور کپی شد!");
+      });
+    }
   </script>
+
 </body>
 </html>

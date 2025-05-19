@@ -6,64 +6,80 @@
   <style>
     body {
       font-family: "Vazirmatn", sans-serif;
-      text-align: center;
-      padding: 40px 10px;
-      background-color: #f4f4f4;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+      background-color: #f0f0f0;
       direction: rtl;
+      padding-top: 30px;
     }
-    input, select, button {
-      padding: 12px;
+    .container {
+      background: white;
+      border-radius: 12px;
+      padding: 24px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      width: 90%;
+      max-width: 500px;
+      text-align: center;
+    }
+    input, select {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      margin-bottom: 15px;
       font-size: 16px;
       border-radius: 8px;
-      margin: 10px;
+      border: 1px solid #ccc;
     }
-    #outputBox {
-      margin-top: 20px;
-      background: #fff;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-      max-width: 90%;
-      margin-left: auto;
-      margin-right: auto;
-    }
-    #result {
-      background: #eee;
-      padding: 10px;
-      border-radius: 8px;
-      font-family: monospace;
-      overflow-x: auto;
-      text-align: left;
-    }
-    .actions button {
+    button {
+      padding: 10px 16px;
       margin: 5px;
+      font-size: 16px;
+      cursor: pointer;
+      border-radius: 8px;
+      border: none;
+    }
+    #copyBtn, #shareBtn {
+      background-color: #008cff;
+      color: white;
+    }
+    pre {
+      background-color: #f5f5f5;
+      padding: 12px;
+      border-radius: 8px;
+      text-align: left;
+      direction: ltr;
+      overflow-x: auto;
+    }
+    #warning {
+      color: red;
+      font-size: 14px;
     }
   </style>
 </head>
 <body>
-  <h2>ساخت دستور yt-dlp</h2>
-  <input type="text" id="url" placeholder="لینک ویدیو یا پلی‌لیست">
-  <br>
-  <select id="format">
-    <option value="best">بالاترین کیفیت</option>
-    <option value="bv*+ba">720p (video+audio)</option>
-    <option value="worstaudio">فقط صدا (ضعیف)</option>
-    <option value="ba">فقط صدا (خوب)</option>
-  </select>
-  <br>
-  <label>
-    <input type="checkbox" id="audioOnly"> تبدیل به MP3
-  </label>
-  <br>
-  <button onclick="generate()">ایجاد دستور</button>
+  <div class="container">
+    <h2>لینک یوتیوب را وارد کنید</h2>
+    <input type="text" id="url" placeholder="لینک ویدیو یا پلی‌لیست">
 
-  <div id="outputBox" style="display:none;">
-    <h3>📋 دستور Termux</h3>
+    <label for="format">انتخاب کیفیت:</label>
+    <select id="format">
+      <option value="best">بهترین کیفیت</option>
+      <option value="bv*+ba">720p - تصویر و صدا جدا</option>
+      <option value="worstaudio">فقط صدا - کیفیت پایین</option>
+      <option value="ba">فقط صدا - کیفیت بالا</option>
+    </select>
+
+    <label><input type="checkbox" id="audioOnly"> تبدیل به MP3</label>
+    <br>
+    <button onclick="generate()">ایجاد دستور</button>
+    <div id="warning"></div>
+
+    <h3>دستور نهایی:</h3>
     <pre id="result"></pre>
-    <div class="actions">
-      <button onclick="copyCommand()">📋 کپی</button>
-      <button onclick="shareCommand()">🔗 اشتراک‌گذاری</button>
-    </div>
+    <button id="copyBtn" onclick="copyToClipboard()">کپی</button>
+    <button id="shareBtn" onclick="shareCommand()">اشتراک‌گذاری</button>
   </div>
 
   <script src="main.js"></script>

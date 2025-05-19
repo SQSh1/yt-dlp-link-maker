@@ -4,44 +4,116 @@
   <meta charset="UTF-8">
   <title>ساخت لینک yt-dlp</title>
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Vazirmatn&display=swap');
+
     body {
-      font-family: sans-serif;
-      padding: 20px;
+      font-family: 'Vazirmatn', sans-serif;
+      background-color: #f4f4f4;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: start;
+      min-height: 100vh;
+      margin: 0;
+      padding: 2rem;
     }
-    .dark {
-      background-color: #121212;
+
+    h2, h3 {
+      color: #333;
+    }
+
+    .container {
+      background: #fff;
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      max-width: 500px;
+      width: 100%;
+      text-align: center;
+    }
+
+    input[type="text"], select {
+      width: 100%;
+      padding: 10px;
+      font-size: 1rem;
+      margin-top: 0.5rem;
+      margin-bottom: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+
+    button {
+      background-color: #007bff;
       color: white;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-top: 1rem;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    pre {
+      background: #e8f0fe;
+      padding: 10px;
+      border-radius: 6px;
+      margin-top: 1rem;
+      text-align: left;
+      direction: ltr;
+      white-space: pre-wrap;
+      word-break: break-all;
+      font-family: monospace;
+      position: relative;
+    }
+
+    #copyBtn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: #28a745;
+      color: white;
+      padding: 5px 10px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    #copyBtn:hover {
+      background: #218838;
+    }
+
+    #warning {
+      color: red;
+      margin-top: 0.5rem;
     }
   </style>
 </head>
 <body>
-  <h2>لینک یوتیوب وارد کن:</h2>
-  <input type="text" id="url" placeholder="Paste YouTube link here" size="50">
-  <br><br>
+  <div class="container">
+    <h2>لینک یوتیوب وارد کن:</h2>
+    <input type="text" id="url" placeholder="Paste YouTube link here" />
 
-  <label for="format">انتخاب کیفیت/فرمت:</label>
-  <select id="format">
-    <option value="best">Best Quality</option>
-    <option value="bv*+ba">720p (best video+audio)</option>
-    <option value="worstaudio">Audio Only (Low)</option>
-    <option value="ba">Audio Only (Best)</option>
-  </select>
-  <br><br>
+    <select id="format">
+      <option value="best">Best Quality</option>
+      <option value="bv*+ba">720p (video+audio)</option>
+      <option value="worstaudio">Audio Only (Low)</option>
+      <option value="ba">Audio Only (Best)</option>
+    </select>
 
-  <label>
-    <input type="checkbox" id="audioOnly">
-    تبدیل به MP3
-  </label>
-  <br><br>
+    <label>
+      <input type="checkbox" id="audioOnly" />
+      تبدیل به MP3
+    </label>
 
-  <button onclick="generate()">ایجاد دستور</button>
-  <button onclick="toggleDarkMode()">تغییر حالت تاریک</button>
-  <br><br>
+    <button onclick="generate()">ایجاد دستور</button>
+    <div id="warning"></div>
 
-  <div id="warning" style="color: red;"></div>
-
-  <h3>دستور نهایی برای Termux:</h3>
-  <pre id="result"></pre>
+    <h3>دستور نهایی برای Termux:</h3>
+    <pre id="result"><button id="copyBtn" onclick="copyResult()">کپی</button><code id="cmdOutput"></code></pre>
+  </div>
 
   <script src="main.js"></script>
 </body>

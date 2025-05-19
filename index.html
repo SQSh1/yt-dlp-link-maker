@@ -5,34 +5,53 @@
   <title>ساخت دستور yt-dlp</title>
   <style>
     body {
-      font-family: sans-serif;
-      background: #f9f9f9;
-      padding: 20px;
-      text-align: center;
-    }
-    input, select, button, textarea {
-      margin: 10px auto;
-      display: block;
-      padding: 10px;
-      font-size: 16px;
-      width: 90%;
-      max-width: 500px;
-    }
-    textarea {
-      height: 100px;
-    }
-    .output-box {
-      background: #eaeaea;
-      padding: 10px;
-      border-radius: 8px;
-      position: relative;
-    }
-    .copy-btn {
-      position: absolute;
-      top: 10px;
-      left: 10px;
-      cursor: pointer;
-    }
+  font-family: sans-serif;
+  background: #f9f9f9;
+  padding: 20px;
+  text-align: center;
+  direction: rtl;
+}
+
+input, select, button, textarea {
+  margin: 10px auto;
+  display: block;
+  padding: 12px;
+  font-size: 16px;
+  width: 90%;
+  max-width: 500px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+button {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+}
+
+button:hover {
+  background-color: #45a049;
+}
+
+textarea {
+  height: 120px;
+  resize: vertical;
+}
+
+.output-box {
+  background: #eaeaea;
+  padding: 10px;
+  border-radius: 8px;
+  position: relative;
+  margin-top: 15px;
+  word-wrap: break-word;
+  text-align: left;
+  direction: ltr;
+  font-family: monospace;
+  white-space: pre-wrap;
+}
+
   </style>
 </head>
 <body>

@@ -2,84 +2,99 @@
 <html lang="fa">
 <head>
   <meta charset="UTF-8">
-  <title>ساخت دستور yt-dlp</title>
+  <title>ساخت لینک yt-dlp</title>
   <style>
     body {
       font-family: "Vazirmatn", sans-serif;
+      background-color: #f5f5f5;
+      direction: rtl;
       display: flex;
       justify-content: center;
       align-items: flex-start;
-      min-height: 100vh;
-      background-color: #f0f0f0;
-      direction: rtl;
-      padding-top: 30px;
+      height: 100vh;
+      padding-top: 40px;
     }
+
     .container {
       background: white;
-      border-radius: 12px;
       padding: 24px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      border-radius: 16px;
+      box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
       width: 90%;
-      max-width: 500px;
+      max-width: 600px;
       text-align: center;
     }
+
     input, select {
-      width: 100%;
+      width: 90%;
       padding: 10px;
-      margin-top: 10px;
-      margin-bottom: 15px;
+      margin: 10px 0;
       font-size: 16px;
-      border-radius: 8px;
-      border: 1px solid #ccc;
     }
+
     button {
       padding: 10px 16px;
-      margin: 5px;
       font-size: 16px;
+      margin: 10px 6px;
       cursor: pointer;
-      border-radius: 8px;
-      border: none;
     }
-    #copyBtn, #shareBtn {
-      background-color: #008cff;
-      color: white;
-    }
+
     pre {
-      background-color: #f5f5f5;
+      background: #eee;
       padding: 12px;
-      border-radius: 8px;
       text-align: left;
-      direction: ltr;
       overflow-x: auto;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      border-radius: 8px;
+      margin-top: 10px;
     }
+
+    .action-buttons {
+      margin-top: 10px;
+    }
+
+    .action-buttons button {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 6px;
+    }
+
     #warning {
       color: red;
-      font-size: 14px;
+      margin-top: 10px;
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <h2>لینک یوتیوب را وارد کنید</h2>
+    <h2>لینک یوتیوب را وارد کن:</h2>
     <input type="text" id="url" placeholder="لینک ویدیو یا پلی‌لیست">
 
-    <label for="format">انتخاب کیفیت:</label>
     <select id="format">
-      <option value="best">بهترین کیفیت</option>
-      <option value="bv*+ba">720p - تصویر و صدا جدا</option>
-      <option value="worstaudio">فقط صدا - کیفیت پایین</option>
-      <option value="ba">فقط صدا - کیفیت بالا</option>
+      <option value="best">بالاترین کیفیت</option>
+      <option value="bv*+ba">720p (ویدیو + صدا)</option>
+      <option value="worstaudio">فقط صدا (کیفیت پایین)</option>
+      <option value="ba">فقط صدا (کیفیت بالا)</option>
     </select>
 
-    <label><input type="checkbox" id="audioOnly"> تبدیل به MP3</label>
+    <label>
+      <input type="checkbox" id="audioOnly" />
+      تبدیل به MP3
+    </label>
+
     <br>
     <button onclick="generate()">ایجاد دستور</button>
     <div id="warning"></div>
 
-    <h3>دستور نهایی:</h3>
+    <h3>دستور نهایی برای Termux:</h3>
     <pre id="result"></pre>
-    <button id="copyBtn" onclick="copyToClipboard()">کپی</button>
-    <button id="shareBtn" onclick="shareCommand()">اشتراک‌گذاری</button>
+
+    <div class="action-buttons">
+      <button onclick="copyCommand()">کپی</button>
+      <button onclick="shareCommand()">اشتراک‌گذاری</button>
+    </div>
   </div>
 
   <script src="main.js"></script>

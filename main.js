@@ -1,50 +1,45 @@
-function generate() {
-  const url = document.getElementById("url").value.trim();
+function generateCommand() {
+  const url = document.getElementById("youtubeUrl").value.trim();
   const format = document.getElementById("format").value;
-  const audioOnly = document.getElementById("audioOnly").checked;
-  const warning = document.getElementById("warning");
-  const result = document.getElementById("result");
+  let command = "";
 
-  warning.textContent = "";
-  result.textContent = "";
-
-  if (!url || !url.includes("youtube.com") && !url.includes("youtu.be")) {
-    warning.textContent = "لطفاً یک لینک معتبر یوتیوب وارد کنید.";
+  if (!url) {
+    document.getElementById("output").value = "Please enter a YouTube URL.";
     return;
   }
 
-  if (url.includes("playlist")) {
-    warning.textContent = "این لینک مربوط به پلی‌لیست است.";
+  switch (format) {
+    case "video":
+      command = `yt-dlp -f best "${url}" -P /storage/emulated/0/Termux`;
+      break;
+    case "audio":
+      command = `yt-dlp -f bestaudio[ext=m4a] --extract-audio --audio-format m4a "${url}" -P /storage/emulated/0/Termux`;
+      break;
+    case "list":
+      command = `yt-dlp -F "${url}"`;
+      break;
   }
 
-  let command = `yt-dlp -f "${format}" "${url}"`;
-
-  if (audioOnly) {
-    command += ' -x --audio-format mp3';
-  }
-
-  command += ' -P /storage/emulated/0/Termux';
-
-  result.textContent = command;
+  document.getElementById("output").value = command;
+  document.getElementById("outputContainer").style.display = "block";
 }
 
-function copyCommand() {
-  const command = document.getElementById("result").textContent;
-  if (!command) return;
-  navigator.clipboard.writeText(command).then(() => {
-    alert("دستور کپی شد!");
-  });
+function copyOutput() {
+  const output = document.getElementById("output");
+  output.select();
+  output.setSelectionRange(0, 99999);
+  document.execCommand("copy");
+  alert("Command copied to clipboard!");
 }
 
-function shareCommand() {
-  const command = document.getElementById("result").textContent;
-  if (!navigator.share || !command) {
-    alert("اشتراک‌گذاری توسط مرورگر پشتیبانی نمی‌شود.");
-    return;
+function shareOutput() {
+  const command = document.getElementById("output").value;
+  if (navigator.share) {
+    navigator.share({
+      title: "yt-dlp command",
+      text: command
+    }).catch(console.error);
+  } else {
+    alert("Sharing not supported on this device/browser.");
   }
-
-  navigator.share({
-    title: 'yt-dlp command',
-    text: command
-  }).catch(() => alert("اشتراک‌گذاری لغو شد."));
 }

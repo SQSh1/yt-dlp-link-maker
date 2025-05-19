@@ -1,94 +1,191 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>yt-dlp Link Maker</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"/>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
   <style>
-    html, body {
-      height: 100%;
-      background-color: #f8f9fa;
-      font-family: "Segoe UI", sans-serif;
+    * {
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
     }
-    .main-wrapper {
-      height: 100%;
+
+    body {
+      margin: 0;
+      padding: 2rem;
+      background-color: #f4f4f9;
       display: flex;
+      flex-direction: column;
       align-items: center;
-      justify-content: center;
-      padding: 20px;
     }
+
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 1.5rem;
+    }
+
     .container {
-      max-width: 750px;
+      max-width: 700px;
       width: 100%;
-    }
-    .card {
+      background-color: white;
+      padding: 2rem;
       border-radius: 1rem;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-      padding: 30px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     }
-    .output-box {
-      background-color: #f1f1f1;
-      padding: 12px;
-      border-radius: 8px;
-      white-space: pre-wrap;
-      word-wrap: break-word;
-      font-family: monospace;
-      font-size: 0.95rem;
+
+    label {
+      font-weight: 600;
+      display: block;
+      margin-bottom: 0.5rem;
     }
-    .form-control, .form-select, .btn {
-      font-size: 1.1rem;
-      padding: 14px;
-    }
-    .action-buttons .btn {
+
+    input, textarea {
       width: 100%;
+      padding: 0.75rem;
+      border-radius: 0.5rem;
+      border: 1px solid #ccc;
+      margin-bottom: 1rem;
+      font-size: 1rem;
+    }
+
+    .buttons {
+      display: flex;
+      gap: 1rem;
+      justify-content: flex-start;
+      flex-wrap: wrap;
+    }
+
+    button {
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: 0.5rem;
+      background-color: #4f46e5;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #3730a3;
+    }
+
+    .output-box {
+      position: relative;
+      background-color: #f1f1f1;
+      border-radius: 0.5rem;
+      padding: 1rem;
+      font-family: monospace;
+      white-space: pre-wrap;
+      margin-top: 1.5rem;
+    }
+
+    .action-buttons {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 0.5rem;
+    }
+
+    .icon-button {
       display: flex;
       align-items: center;
-      justify-content: center;
+      gap: 0.5rem;
+      font-size: 0.95rem;
+      padding: 0.5rem 1rem;
+      background-color: #e0e7ff;
+      color: #1e3a8a;
+      border-radius: 0.375rem;
+      cursor: pointer;
+      border: none;
     }
-    .action-buttons i {
-      margin-right: 8px;
+
+    .icon-button:hover {
+      background-color: #c7d2fe;
     }
-    .action-buttons .btn + .btn {
-      margin-top: 10px;
+
+    .fade-in {
+      animation: fadeIn 0.4s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
   </style>
 </head>
-<body>
-  <div class="main-wrapper">
-    <div class="container">
-      <div class="card">
-        <h3 class="mb-4 text-center">yt-dlp Link Maker</h3>
-        <input id="urlInput" type="text" class="form-control mb-3" placeholder="Paste YouTube URL here" />
-        <select id="formatSelect" class="form-select mb-3">
-          <option value="bestvideo[ext=mp4]+bestaudio[ext=m4a]">Best MP4 (video+audio)</option>
-          <option value="bestvideo+bestaudio">Best Separate Streams</option>
-          <option value="bestaudio">Audio Only</option>
-          <option value="best">Best Pre-merged (⚠️ not always best)</option>
-        </select>
-        <button onclick="generateCommand()" class="btn btn-primary w-100 mb-4">Generate Command</button>
 
-        <div id="outputSection" class="d-none">
-          <label class="form-label fw-bold">Generated Command:</label>
-          <div class="output-box mb-3" id="outputBox"></div>
-          <div class="row action-buttons">
-            <div class="col-md-6">
-              <button class="btn btn-outline-secondary" onclick="copyCommand()">
-                <i class="fa-solid fa-copy"></i> Copy
-              </button>
-            </div>
-            <div class="col-md-6">
-              <button class="btn btn-outline-primary" onclick="shareCommand()">
-                <i class="fa-solid fa-share-nodes"></i> Share
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
+<body>
+  <h1>yt-dlp Link Maker</h1>
+  <div class="container">
+    <label for="ytlink">YouTube Link</label>
+    <input type="text" id="ytlink" placeholder="https://youtu.be/..." />
+
+    <label for="format">Custom Format (e.g. 248+140 or bestvideo+bestaudio)</label>
+    <input type="text" id="format" placeholder="bestvideo[ext=mp4]+bestaudio[ext=m4a]" />
+
+    <div class="buttons">
+      <button onclick="generateCommand()">Generate</button>
+      <button onclick="generateFormatListCommand()">Show Formats</button>
+    </div>
+
+    <div class="output-box fade-in" id="output" style="display:none;"></div>
+    <div class="action-buttons" id="actions" style="display:none;">
+      <button class="icon-button" onclick="copyCommand()"><i class="fas fa-copy"></i> Copy</button>
+      <button class="icon-button" onclick="shareCommand()"><i class="fas fa-share-alt"></i> Share</button>
     </div>
   </div>
 
-  <script src="main.js"></script>
+  <script>
+    let currentCommand = '';
+
+    function generateCommand() {
+      const link = document.getElementById("ytlink").value.trim();
+      const format = document.getElementById("format").value.trim();
+      if (!link) return;
+      const f = format ? `-f \"${format}\" ` : '';
+      currentCommand = `yt-dlp ${f}-o \"/storage/emulated/0/Termux/%(title)s.%(ext)s\" \"${link}\"`;
+      document.getElementById("output").textContent = currentCommand;
+      document.getElementById("output").style.display = 'block';
+      document.getElementById("actions").style.display = 'flex';
+    }
+
+    function generateFormatListCommand() {
+      const link = document.getElementById("ytlink").value.trim();
+      if (!link) return;
+      currentCommand = `yt-dlp -F \"${link}\"`;
+      document.getElementById("output").textContent = currentCommand;
+      document.getElementById("output").style.display = 'block';
+      document.getElementById("actions").style.display = 'flex';
+    }
+
+    function copyCommand() {
+      navigator.clipboard.writeText(currentCommand);
+      const box = document.getElementById("output");
+      box.style.backgroundColor = "#d1fae5";
+      setTimeout(() => box.style.backgroundColor = "#f1f1f1", 1200);
+    }
+
+    function shareCommand() {
+      if (navigator.share) {
+        navigator.share({
+          title: "yt-dlp Command",
+          text: currentCommand
+        });
+      } else {
+        alert("Sharing is not supported on this browser.");
+      }
+    }
+  </script>
 </body>
+
 </html>

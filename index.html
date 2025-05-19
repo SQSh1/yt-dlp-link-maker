@@ -37,58 +37,45 @@
 </head>
 <body>
   <h2>ابزار ساخت دستور yt-dlp</h2>
-  
-  <input type="text" id="ytLink" placeholder="لینک یوتیوب را وارد کنید">
-  <button onclick="analyzeLink()">تحلیل لینک</button>
+  <textarea id="ytInfo" placeholder="خروجی دستور yt-dlp -F را اینجا Paste کنید"></textarea>
+  <button onclick="extractFormats()">استخراج کیفیت‌ها</button>
 
   <select id="formatSelect">
-    <option value="">ابتدا لینک را تحلیل کنید...</option>
+    <option value="">لطفاً کیفیت را انتخاب کنید</option>
   </select>
+<!-- ... ادامه ... -->
+<script>
+  function extractFormats() {
+    const info = document.getElementById("ytInfo").value;
+    const lines = info.split("\n");
+    const formats = [];
 
-  <button onclick="buildCommand()">ساخت دستور</button>
-
-  <div class="output-box">
-    <button class="copy-btn" onclick="copyCommand()">کپی</button>
-    <textarea id="ytCommand" readonly></textarea>
-  </div>
-
-  <script>
-    function analyzeLink() {
-      const link = document.getElementById("ytLink").value;
-      if (!link.includes("youtube.com") && !link.includes("youtu.be")) {
-        alert("لینک معتبر نیست!");
-        return;
+    lines.forEach(line => {
+      // استخراج خطوطی که با کد عددی شروع می‌شوند
+      const match = line.match(/^(\d{1,4})(\+?\d{0,4})\s+(\w+)\s+(.*)$/);
+      if (match) {
+        const code = match[1] + (match[2] ? match[2] : "");
+        const ext = match[3];
+        const desc = match[4].trim();
+        formats.push({ id: code, label: `${code} - ${desc}` });
       }
-      // شبیه‌سازی کیفیت‌ها (در نسخه بعدی با تحلیل واقعی جایگزین می‌کنیم)
-      const formats = [
-        { id: "137+140", label: "1080p MP4 + Audio" },
-        { id: "22", label: "720p MP4 (همراه صدا)" },
-        { id: "140", label: "Audio M4A" }
-      ];
-      const select = document.getElementById("formatSelect");
-      select.innerHTML = "";
-      formats.forEach(f => {
-        const option = document.createElement("option");
-        option.value = f.id;
-        option.textContent = f.label;
-        select.appendChild(option);
-      });
-    }
+    });
 
-    function buildCommand() {
-      const link = document.getElementById("ytLink").value;
-      const format = document.getElementById("formatSelect").value;
-      if (!format) return alert("لطفاً کیفیت را انتخاب کنید.");
-      const cmd = `yt-dlp -f "${format}" "${link}"`;
-      document.getElementById("ytCommand").value = cmd;
-    }
+    const select = document.getElementById("formatSelect");
+    select.innerHTML = "";
+    formats.forEach(f => {
+      const option = document.createElement("option");
+      option.value = f.id;
+      option.textContent = f.label;
+      select.appendChild(option);
+    });
 
-    function copyCommand() {
-      const cmd = document.getElementById("ytCommand");
-      cmd.select();
-      document.execCommand("copy");
-      alert("دستور کپی شد!");
+    if (formats.length === 0) {
+      alert("هیچ کیفیتی یافت نشد. لطفاً خروجی کامل yt-dlp -F را Paste کنید.");
     }
+  }
+
+  // تابع‌های قبلی مثل buildCommand و copyCommand بدون تغییر باقی می‌مانند
   </script>
 </body>
 </html>

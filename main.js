@@ -1,36 +1,49 @@
 function generateCommand() {
   const url = document.getElementById("urlInput").value.trim();
   const format = document.getElementById("formatSelect").value;
-  const output = "/storage/emulated/0/Termux/%(title)s.%(ext)s";
+  if (!url) return;
 
-  if (!url) {
-    alert("Please enter a YouTube URL.");
-    return;
-  }
-
-  const cmd = `yt-dlp -f "${format}" -o "${output}" "${url}"`;
-
-  document.getElementById("outputBox").textContent = cmd;
+  const output = `yt-dlp -f "${format}" -o "/storage/emulated/0/Termux/%(title)s.%(ext)s" "${url}"`;
+  document.getElementById("outputBox").textContent = output;
   document.getElementById("outputSection").classList.remove("d-none");
 }
 
 function copyCommand() {
-  const text = document.getElementById("outputBox").textContent;
-  navigator.clipboard.writeText(text).then(() => {
-    alert("Command copied to clipboard.");
+  const output = document.getElementById("outputBox").textContent;
+  navigator.clipboard.writeText(output).then(() => {
+    showToast("Command copied to clipboard");
   });
 }
 
 function shareCommand() {
-  const text = document.getElementById("outputBox").textContent;
-
+  const output = document.getElementById("outputBox").textContent;
   if (navigator.share) {
-    navigator.share({
-      text: text
-    }).catch((error) => {
-      console.error("Error sharing:", error);
-    });
+    navigator.share({ text: output }).catch(() => {});
   } else {
-    alert("Share not supported on this browser. Please copy manually.");
+    showToast("Sharing not supported on this browser");
   }
+}
+
+// نمایش toast
+function showToast(message) {
+  let toast = document.createElement("div");
+  toast.textContent = message;
+  toast.style.position = "fixed";
+  toast.style.bottom = "30px";
+  toast.style.left = "50%";
+  toast.style.transform = "translateX(-50%)";
+  toast.style.backgroundColor = "#333";
+  toast.style.color = "#fff";
+  toast.style.padding = "10px 20px";
+  toast.style.borderRadius = "8px";
+  toast.style.boxShadow = "0 5px 15px rgba(0,0,0,0.3)";
+  toast.style.zIndex = "9999";
+  toast.style.fontSize = "0.95rem";
+  document.body.appendChild(toast);
+  
+  setTimeout(() => {
+    toast.style.opacity = "0";
+    toast.style.transition = "opacity 0.5s ease";
+    setTimeout(() => toast.remove(), 500);
+  }, 2000);
 }

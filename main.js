@@ -1,47 +1,42 @@
-function isPlaylist(url) {
-  return url.includes("list=");
-}
-
 function generate() {
   const url = document.getElementById("url").value.trim();
   const format = document.getElementById("format").value;
   const audioOnly = document.getElementById("audioOnly").checked;
-  const isList = isPlaylist(url);
-  const path = "/storage/emulated/0/Termux/";
 
   if (!url) {
-    document.getElementById("warning").innerText = "لطفاً یک لینک وارد کن!";
+    alert("لطفاً یک لینک وارد کنید");
     return;
   }
 
-  let playlistFlag = isList ? "--yes-playlist" : "--no-playlist";
-  let cmd = `yt-dlp -f "${format}" ${playlistFlag} -o "${path}%(title)s.%(ext)s" "${url}"`;
+  const path = "~/storage/shared/Termux/";
+  const output = audioOnly ? `${path}%(title)s.%(ext)s` : `${path}%(title)s.%(ext)s`;
+  let cmd = `yt-dlp -f "${format}" -o "${output}" "${url}"`;
 
   if (audioOnly) {
     cmd += ' --extract-audio --audio-format mp3';
   }
 
-  document.getElementById("cmdOutput").innerText = cmd;
-  document.getElementById("warning").innerText = isList ? "این لینک پلی‌لیسته ✅" : "این لینک ویدیوی تکیه 🎥";
+  document.getElementById("result").textContent = cmd;
+  document.getElementById("outputBox").style.display = "block";
 }
 
-function copyResult() {
-  const text = document.getElementById("cmdOutput").innerText;
-  if (!text) return alert("دستوری وجود نداره!");
+function copyCommand() {
+  const text = document.getElementById("result").textContent;
   navigator.clipboard.writeText(text).then(() => {
-    alert("دستور کپی شد ✅");
+    alert("✅ کپی شد!");
+  }).catch(() => {
+    alert("❌ کپی نشد!");
   });
 }
 
-function shareResult() {
-  const text = document.getElementById("cmdOutput").innerText;
-  if (!text) return alert("دستوری برای اشتراک نیست!");
+function shareCommand() {
+  const text = document.getElementById("result").textContent;
   if (navigator.share) {
     navigator.share({
-      title: "دستور yt-dlp برای Termux",
+      title: 'yt-dlp command',
       text: text
     });
   } else {
-    prompt("مرورگرت اشتراک‌گذاری رو پشتیبانی نمی‌کنه. خودت کپی کن:", text);
+    alert("اشتراک‌گذاری در این مرورگر پشتیبانی نمی‌شود.");
   }
 }

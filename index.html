@@ -10,83 +10,100 @@
       font-family: 'Vazirmatn', sans-serif;
       background-color: #f4f4f4;
       display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: start;
+      justify-content: center;
+      align-items: flex-start;
+      padding-top: 40px;
       min-height: 100vh;
       margin: 0;
-      padding: 2rem;
-    }
-
-    h2, h3 {
-      color: #333;
     }
 
     .container {
       background: #fff;
       padding: 2rem;
-      border-radius: 10px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-      max-width: 500px;
-      width: 100%;
+      border-radius: 14px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      width: 90%;
+      max-width: 600px;
       text-align: center;
+    }
+
+    h2, h3 {
+      color: #222;
+      margin-bottom: 1rem;
     }
 
     input[type="text"], select {
       width: 100%;
-      padding: 10px;
+      padding: 12px;
       font-size: 1rem;
       margin-top: 0.5rem;
       margin-bottom: 1rem;
       border: 1px solid #ccc;
-      border-radius: 6px;
+      border-radius: 8px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 1rem;
     }
 
     button {
-      background-color: #007bff;
-      color: white;
-      padding: 10px 15px;
+      padding: 10px 16px;
+      font-size: 1rem;
       border: none;
-      border-radius: 6px;
+      border-radius: 8px;
       cursor: pointer;
-      margin-top: 1rem;
+      margin: 0.3rem;
     }
 
-    button:hover {
+    #generateBtn {
+      background-color: #007bff;
+      color: white;
+    }
+
+    #generateBtn:hover {
       background-color: #0056b3;
     }
 
+    .button-row {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 1rem;
+    }
+
+    .copy-btn {
+      background-color: #28a745;
+      color: white;
+    }
+
+    .copy-btn:hover {
+      background-color: #218838;
+    }
+
+    .share-btn {
+      background-color: #17a2b8;
+      color: white;
+    }
+
+    .share-btn:hover {
+      background-color: #117a8b;
+    }
+
     pre {
-      background: #e8f0fe;
-      padding: 10px;
-      border-radius: 6px;
+      background: #eef6ff;
+      padding: 12px;
+      border-radius: 10px;
       margin-top: 1rem;
       text-align: left;
       direction: ltr;
       white-space: pre-wrap;
       word-break: break-all;
       font-family: monospace;
-      position: relative;
-    }
-
-    #copyBtn {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      background: #28a745;
-      color: white;
-      padding: 5px 10px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-
-    #copyBtn:hover {
-      background: #218838;
     }
 
     #warning {
-      color: red;
+      color: #d9534f;
       margin-top: 0.5rem;
     }
   </style>
@@ -94,7 +111,7 @@
 <body>
   <div class="container">
     <h2>لینک یوتیوب وارد کن:</h2>
-    <input type="text" id="url" placeholder="Paste YouTube link here" />
+    <input type="text" id="url" placeholder="لینک ویدیو یا پلی‌لیست">
 
     <select id="format">
       <option value="best">Best Quality</option>
@@ -108,11 +125,17 @@
       تبدیل به MP3
     </label>
 
-    <button onclick="generate()">ایجاد دستور</button>
+    <button id="generateBtn" onclick="generate()">ایجاد دستور</button>
+
     <div id="warning"></div>
 
     <h3>دستور نهایی برای Termux:</h3>
-    <pre id="result"><button id="copyBtn" onclick="copyResult()">کپی</button><code id="cmdOutput"></code></pre>
+    <pre id="result"><code id="cmdOutput"></code></pre>
+
+    <div class="button-row">
+      <button class="copy-btn" onclick="copyResult()">کپی</button>
+      <button class="share-btn" onclick="shareResult()">اشتراک‌گذاری</button>
+    </div>
   </div>
 
   <script src="main.js"></script>

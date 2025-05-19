@@ -2,139 +2,67 @@
 <html lang="fa">
 <head>
   <meta charset="UTF-8">
-  <title>ساخت لینک yt-dlp</title>
+  <title>ساخت دستور yt-dlp</title>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Vazirmatn&display=swap');
-
     body {
-      font-family: 'Vazirmatn', sans-serif;
-      background-color: #f4f4f4;
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-      padding-top: 40px;
-      min-height: 100vh;
-      margin: 0;
-    }
-
-    .container {
-      background: #fff;
-      padding: 2rem;
-      border-radius: 14px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-      width: 90%;
-      max-width: 600px;
+      font-family: "Vazirmatn", sans-serif;
       text-align: center;
+      padding: 40px 10px;
+      background-color: #f4f4f4;
+      direction: rtl;
     }
-
-    h2, h3 {
-      color: #222;
-      margin-bottom: 1rem;
-    }
-
-    input[type="text"], select {
-      width: 100%;
+    input, select, button {
       padding: 12px;
-      font-size: 1rem;
-      margin-top: 0.5rem;
-      margin-bottom: 1rem;
-      border: 1px solid #ccc;
+      font-size: 16px;
       border-radius: 8px;
+      margin: 10px;
     }
-
-    label {
-      display: block;
-      margin-bottom: 1rem;
-    }
-
-    button {
-      padding: 10px 16px;
-      font-size: 1rem;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      margin: 0.3rem;
-    }
-
-    #generateBtn {
-      background-color: #007bff;
-      color: white;
-    }
-
-    #generateBtn:hover {
-      background-color: #0056b3;
-    }
-
-    .button-row {
-      display: flex;
-      justify-content: center;
-      gap: 10px;
-      margin-top: 1rem;
-    }
-
-    .copy-btn {
-      background-color: #28a745;
-      color: white;
-    }
-
-    .copy-btn:hover {
-      background-color: #218838;
-    }
-
-    .share-btn {
-      background-color: #17a2b8;
-      color: white;
-    }
-
-    .share-btn:hover {
-      background-color: #117a8b;
-    }
-
-    pre {
-      background: #eef6ff;
-      padding: 12px;
+    #outputBox {
+      margin-top: 20px;
+      background: #fff;
+      padding: 20px;
       border-radius: 10px;
-      margin-top: 1rem;
-      text-align: left;
-      direction: ltr;
-      white-space: pre-wrap;
-      word-break: break-all;
-      font-family: monospace;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      max-width: 90%;
+      margin-left: auto;
+      margin-right: auto;
     }
-
-    #warning {
-      color: #d9534f;
-      margin-top: 0.5rem;
+    #result {
+      background: #eee;
+      padding: 10px;
+      border-radius: 8px;
+      font-family: monospace;
+      overflow-x: auto;
+      text-align: left;
+    }
+    .actions button {
+      margin: 5px;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h2>لینک یوتیوب وارد کن:</h2>
-    <input type="text" id="url" placeholder="لینک ویدیو یا پلی‌لیست">
+  <h2>ساخت دستور yt-dlp</h2>
+  <input type="text" id="url" placeholder="لینک ویدیو یا پلی‌لیست">
+  <br>
+  <select id="format">
+    <option value="best">بالاترین کیفیت</option>
+    <option value="bv*+ba">720p (video+audio)</option>
+    <option value="worstaudio">فقط صدا (ضعیف)</option>
+    <option value="ba">فقط صدا (خوب)</option>
+  </select>
+  <br>
+  <label>
+    <input type="checkbox" id="audioOnly"> تبدیل به MP3
+  </label>
+  <br>
+  <button onclick="generate()">ایجاد دستور</button>
 
-    <select id="format">
-      <option value="best">Best Quality</option>
-      <option value="bv*+ba">720p (video+audio)</option>
-      <option value="worstaudio">Audio Only (Low)</option>
-      <option value="ba">Audio Only (Best)</option>
-    </select>
-
-    <label>
-      <input type="checkbox" id="audioOnly" />
-      تبدیل به MP3
-    </label>
-
-    <button id="generateBtn" onclick="generate()">ایجاد دستور</button>
-
-    <div id="warning"></div>
-
-    <h3>دستور نهایی برای Termux:</h3>
-    <pre id="result"><code id="cmdOutput"></code></pre>
-
-    <div class="button-row">
-      <button class="copy-btn" onclick="copyResult()">کپی</button>
-      <button class="share-btn" onclick="shareResult()">اشتراک‌گذاری</button>
+  <div id="outputBox" style="display:none;">
+    <h3>📋 دستور Termux</h3>
+    <pre id="result"></pre>
+    <div class="actions">
+      <button onclick="copyCommand()">📋 کپی</button>
+      <button onclick="shareCommand()">🔗 اشتراک‌گذاری</button>
     </div>
   </div>
 

@@ -1,140 +1,137 @@
 <!DOCTYPE html>
-<html lang="fa" dir="rtl">
+<html lang="fa">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>YT-DLP Link Builder</title>
+  <title>تولید دستور yt-dlp</title>
   <style>
     body {
       font-family: sans-serif;
-      background: #f2f2f2;
+      background-color: #f8f9fa;
       margin: 0;
       padding: 2rem;
-      text-align: center;
-      direction: rtl;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
+
     h1 {
       margin-bottom: 1rem;
+      font-size: 1.5rem;
     }
-    textarea, select, input {
-      width: 90%;
-      max-width: 700px;
-      margin: 1rem 0;
-      padding: 1rem;
+
+    .container {
+      max-width: 500px;
+      width: 100%;
+      background: white;
+      padding: 1.5rem;
+      border-radius: 1rem;
+      box-shadow: 0 0 12px rgba(0,0,0,0.1);
+    }
+
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 0.5rem;
       font-size: 1rem;
+      margin-bottom: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 0.5rem;
     }
-    .selects {
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 1rem;
+
+    .formats {
+      margin-bottom: 1rem;
     }
-    .output-box {
-      background: #fff;
-      padding: 1rem;
-      border-radius: 8px;
-      box-shadow: 0 0 10px #ccc;
+
+    .formats label {
+      display: block;
+      margin-bottom: 0.3rem;
+    }
+
+    button {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 0.6rem 1rem;
+      font-size: 1rem;
+      border-radius: 0.5rem;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    .output {
       margin-top: 1rem;
+      background-color: #f1f1f1;
+      padding: 0.8rem;
+      border-radius: 0.5rem;
       position: relative;
     }
-    #copyBtn {
+
+    .copy-btn {
       position: absolute;
-      left: 1rem;
-      top: 1rem;
-      padding: 0.5rem 1rem;
+      top: 0.4rem;
+      right: 0.4rem;
+      background: #6c757d;
+      border: none;
+      color: white;
+      border-radius: 0.3rem;
+      padding: 0.2rem 0.5rem;
       cursor: pointer;
-    }
-    button {
-      padding: 1rem 2rem;
-      margin-top: 1rem;
-      font-size: 1rem;
-      cursor: pointer;
-    }
-    @media (max-width: 600px) {
-      .selects {
-        flex-direction: column;
-      }
+      font-size: 0.8rem;
     }
   </style>
 </head>
 <body>
+  <h1>سازنده دستور yt-dlp</h1>
+  <div class="container">
+    <label for="url">لینک ویدیو:</label>
+    <input type="text" id="url" placeholder="مثلاً https://youtu.be/abc123" />
 
-  <h1>ساخت دستور yt-dlp</h1>
+    <div class="formats">
+      <label><input type="radio" name="format" value="best" checked /> بهترین کیفیت (پیش‌فرض)</label>
+      <label><input type="radio" name="format" value="bv*+ba/b"> کیفیت خوب و ترکیبی</label>
+      <label><input type="radio" name="format" value="22"> کیفیت mp4 (720p)</label>
+      <label><input type="radio" name="format" value="18"> کیفیت mp4 (360p)</label>
+      <label><input type="radio" name="format" value="bestaudio"> فقط صدا (برای MP3)</label>
+    </div>
 
-  <textarea id="formatsInput" rows="10" placeholder="خروجی yt-dlp -F را اینجا Paste کنید..."></textarea>
-  <button onclick="parseFormats()">تحلیل کیفیت‌ها</button>
+    <button onclick="generateCommand()">تولید دستور</button>
 
-  <div class="selects" id="qualitySelectors" style="display:none;">
-    <select id="videoFormat"></select>
-    <select id="audioFormat"></select>
-  </div>
-
-  <div class="output-box" id="outputBox" style="display:none;">
-    <button id="copyBtn" onclick="copyCommand()">کپی</button>
-    <pre id="ytCommand"></pre>
+    <div class="output" id="output" style="display:none;">
+      <button class="copy-btn" onclick="copyCommand()">کپی</button>
+      <code id="command"></code>
+    </div>
   </div>
 
   <script>
-    function parseFormats() {
-      const input = document.getElementById('formatsInput').value;
-      const lines = input.split('\n').filter(line => line.match(/^\d|^\d{3}-/));
-      const videoSel = document.getElementById('videoFormat');
-      const audioSel = document.getElementById('audioFormat');
-
-      videoSel.innerHTML = '<option value="">[انتخاب کیفیت ویدیو]</option>';
-      audioSel.innerHTML = '<option value="">[انتخاب کیفیت صدا]</option>';
-
-      lines.forEach(line => {
-        const cols = line.trim().split(/\s{2,}/);
-        const id = cols[0];
-        const ext = cols[1];
-        const res = cols[2] || '';
-        const tbr = cols[5] || '';
-        const more = cols[cols.length - 1] || '';
-
-        const label = `${id} - ${ext} - ${res} - ${tbr} - ${more}`;
-        if (res.includes('audio') || ext === 'm4a' || ext === 'webm') {
-          audioSel.innerHTML += `<option value="${id}">${label}</option>`;
-        } else {
-          videoSel.innerHTML += `<option value="${id}">${label}</option>`;
-        }
-      });
-
-      document.getElementById('qualitySelectors').style.display = 'flex';
-
-      videoSel.onchange = generateCommand;
-      audioSel.onchange = generateCommand;
-    }
-
     function generateCommand() {
-      const vid = document.getElementById('videoFormat').value;
-      const aud = document.getElementById('audioFormat').value;
-      const out = document.getElementById('ytCommand');
-      const box = document.getElementById('outputBox');
-
-      if (vid || aud) {
-        let cmd = 'yt-dlp ';
-        if (vid && aud) {
-          cmd += `-f "${vid}+${aud}" `;
-        } else {
-          cmd += `-f "${vid || aud}" `;
-        }
-        cmd += '"<لینک_ویدیو>"';
-        out.textContent = cmd;
-        box.style.display = 'block';
-      } else {
-        out.textContent = '';
-        box.style.display = 'none';
+      const url = document.getElementById("url").value.trim();
+      const format = document.querySelector('input[name="format"]:checked').value;
+      if (!url) {
+        alert("لطفاً لینک ویدیو را وارد کنید.");
+        return;
       }
+
+      let command = `yt-dlp -f "${format}" "${url}"`;
+      if (format === "bestaudio") {
+        command += " --extract-audio --audio-format mp3";
+      }
+
+      document.getElementById("command").innerText = command;
+      document.getElementById("output").style.display = "block";
     }
 
     function copyCommand() {
-      const text = document.getElementById('ytCommand').textContent;
+      const text = document.getElementById("command").innerText;
       navigator.clipboard.writeText(text).then(() => {
-        document.getElementById('copyBtn').innerText = 'کپی شد!';
-        setTimeout(() => {
-          document.getElementById('copyBtn').innerText = 'کپی';
-        }, 1500);
+        alert("دستور کپی شد!");
       });
     }
   </script>

@@ -8,23 +8,26 @@ function generate() {
   const audioOnly = document.getElementById("audioOnly").checked;
   const isList = isPlaylist(url);
   const path = "/storage/emulated/0/Termux/";
-  const playlistFlag = isList ? "--yes-playlist" : "";
-  const mp3Flag = audioOnly ? '--extract-audio --audio-format mp3' : '';
-  const warn = document.getElementById("warning");
 
+  let warningText = "";
   if (isList) {
-    warn.innerText = "هشدار: این لینک یک پلی‌لیست است.";
-  } else {
-    warn.innerText = "";
+    warningText = "هشدار: این لینک مربوط به پلی‌لیست هست.";
   }
 
-  const cmd = `yt-dlp -f "${format}" ${playlistFlag} ${mp3Flag} -o "${path}%(title)s.%(ext)s" "${url}"`;
-  document.getElementById("result").innerText = cmd;
+  let playlistFlag = isList ? "--yes-playlist" : "--no-playlist";
+  let cmd = `yt-dlp -f "${format}" ${playlistFlag} -o "${path}%(title)s.%(ext)s" "${url}"`;
 
-  // کپی به کلیپ‌بورد
-  navigator.clipboard.writeText(cmd);
+  if (audioOnly) {
+    cmd += ' --extract-audio --audio-format mp3';
+  }
+
+  document.getElementById("cmdOutput").innerText = cmd;
+  document.getElementById("warning").innerText = warningText;
 }
 
-function toggleDarkMode() {
-  document.body.classList.toggle("dark");
+function copyResult() {
+  const text = document.getElementById("cmdOutput").innerText;
+  navigator.clipboard.writeText(text).then(() => {
+    alert("کپی شد!");
+  });
 }

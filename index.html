@@ -1,99 +1,62 @@
 <!DOCTYPE html>
-<html lang="fa">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>ساخت لینک yt-dlp</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>yt-dlp Link Maker</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"/>
   <style>
     body {
-      font-family: "Vazirmatn", sans-serif;
-      background-color: #f5f5f5;
-      direction: rtl;
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-      height: 100vh;
-      padding-top: 40px;
+      background-color: #f8f9fa;
+      font-family: "Segoe UI", sans-serif;
     }
-
     .container {
-      background: white;
-      padding: 24px;
-      border-radius: 16px;
-      box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
-      width: 90%;
       max-width: 600px;
-      text-align: center;
+      margin-top: 5vh;
+      padding: 20px;
     }
-
-    input, select {
-      width: 90%;
+    .card {
+      border-radius: 1rem;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+    }
+    .output-box {
+      background-color: #f1f1f1;
       padding: 10px;
-      margin: 10px 0;
-      font-size: 16px;
-    }
-
-    button {
-      padding: 10px 16px;
-      font-size: 16px;
-      margin: 10px 6px;
-      cursor: pointer;
-    }
-
-    pre {
-      background: #eee;
-      padding: 12px;
-      text-align: left;
-      overflow-x: auto;
+      border-radius: 8px;
       white-space: pre-wrap;
       word-wrap: break-word;
-      border-radius: 8px;
-      margin-top: 10px;
     }
-
-    .action-buttons {
-      margin-top: 10px;
+    .btn-copy {
+      margin-left: 10px;
     }
-
-    .action-buttons button {
-      background-color: #007bff;
-      color: white;
-      border: none;
-      border-radius: 6px;
-    }
-
-    #warning {
-      color: red;
-      margin-top: 10px;
+    .btn-group-custom .btn {
+      min-width: 80px;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h2>لینک یوتیوب را وارد کن:</h2>
-    <input type="text" id="url" placeholder="لینک ویدیو یا پلی‌لیست">
+  <div class="container text-center">
+    <div class="card p-4">
+      <h3 class="mb-3">yt-dlp Link Maker</h3>
+      <input id="urlInput" type="text" class="form-control mb-3" placeholder="Paste YouTube URL here" />
+      <select id="formatSelect" class="form-select mb-3">
+        <option value="bestvideo[ext=mp4]+bestaudio[ext=m4a]">Best MP4 (video+audio)</option>
+        <option value="bestvideo+bestaudio">Best (any format)</option>
+        <option value="bestaudio">Audio Only</option>
+        <option value="best">Best Available</option>
+      </select>
+      <button onclick="generateCommand()" class="btn btn-primary mb-3">Generate Command</button>
 
-    <select id="format">
-      <option value="best">بالاترین کیفیت</option>
-      <option value="bv*+ba">720p (ویدیو + صدا)</option>
-      <option value="worstaudio">فقط صدا (کیفیت پایین)</option>
-      <option value="ba">فقط صدا (کیفیت بالا)</option>
-    </select>
-
-    <label>
-      <input type="checkbox" id="audioOnly" />
-      تبدیل به MP3
-    </label>
-
-    <br>
-    <button onclick="generate()">ایجاد دستور</button>
-    <div id="warning"></div>
-
-    <h3>دستور نهایی برای Termux:</h3>
-    <pre id="result"></pre>
-
-    <div class="action-buttons">
-      <button onclick="copyCommand()">کپی</button>
-      <button onclick="shareCommand()">اشتراک‌گذاری</button>
+      <div id="outputSection" class="text-start d-none">
+        <label class="form-label fw-bold">Generated Command:</label>
+        <div class="d-flex align-items-start">
+          <div id="outputBox" class="output-box flex-grow-1"></div>
+          <div class="ms-2">
+            <button class="btn btn-outline-secondary btn-copy" onclick="copyCommand()">Copy</button>
+            <button class="btn btn-outline-primary btn-copy" onclick="shareCommand()">Share</button>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 

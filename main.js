@@ -1,45 +1,36 @@
 function generateCommand() {
-  const url = document.getElementById("youtubeUrl").value.trim();
-  const format = document.getElementById("format").value;
-  let command = "";
+  const url = document.getElementById("urlInput").value.trim();
+  const format = document.getElementById("formatSelect").value;
+  const output = "/storage/emulated/0/Termux/%(title)s.%(ext)s";
 
   if (!url) {
-    document.getElementById("output").value = "Please enter a YouTube URL.";
+    alert("Please enter a YouTube URL.");
     return;
   }
 
-  switch (format) {
-    case "video":
-      command = `yt-dlp -f best "${url}" -P /storage/emulated/0/Termux`;
-      break;
-    case "audio":
-      command = `yt-dlp -f bestaudio[ext=m4a] --extract-audio --audio-format m4a "${url}" -P /storage/emulated/0/Termux`;
-      break;
-    case "list":
-      command = `yt-dlp -F "${url}"`;
-      break;
-  }
+  const cmd = `yt-dlp -f "${format}" -o "${output}" "${url}"`;
 
-  document.getElementById("output").value = command;
-  document.getElementById("outputContainer").style.display = "block";
+  document.getElementById("outputBox").textContent = cmd;
+  document.getElementById("outputSection").classList.remove("d-none");
 }
 
-function copyOutput() {
-  const output = document.getElementById("output");
-  output.select();
-  output.setSelectionRange(0, 99999);
-  document.execCommand("copy");
-  alert("Command copied to clipboard!");
+function copyCommand() {
+  const text = document.getElementById("outputBox").textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    alert("Command copied to clipboard.");
+  });
 }
 
-function shareOutput() {
-  const command = document.getElementById("output").value;
+function shareCommand() {
+  const text = document.getElementById("outputBox").textContent;
+
   if (navigator.share) {
     navigator.share({
-      title: "yt-dlp command",
-      text: command
-    }).catch(console.error);
+      text: text
+    }).catch((error) => {
+      console.error("Error sharing:", error);
+    });
   } else {
-    alert("Sharing not supported on this device/browser.");
+    alert("Share not supported on this browser. Please copy manually.");
   }
 }

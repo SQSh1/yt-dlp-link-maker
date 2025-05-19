@@ -2,41 +2,49 @@ function generate() {
   const url = document.getElementById("url").value.trim();
   const format = document.getElementById("format").value;
   const audioOnly = document.getElementById("audioOnly").checked;
+  const warning = document.getElementById("warning");
+  const result = document.getElementById("result");
 
-  if (!url) {
-    alert("لطفاً یک لینک وارد کنید");
+  warning.textContent = "";
+  result.textContent = "";
+
+  if (!url || !url.includes("youtube.com") && !url.includes("youtu.be")) {
+    warning.textContent = "لطفاً یک لینک معتبر یوتیوب وارد کنید.";
     return;
   }
 
-  const path = "~/storage/shared/Termux/";
-  const output = audioOnly ? `${path}%(title)s.%(ext)s` : `${path}%(title)s.%(ext)s`;
-  let cmd = `yt-dlp -f "${format}" -o "${output}" "${url}"`;
-
-  if (audioOnly) {
-    cmd += ' --extract-audio --audio-format mp3';
+  if (url.includes("playlist")) {
+    warning.textContent = "این لینک مربوط به پلی‌لیست است.";
   }
 
-  document.getElementById("result").textContent = cmd;
-  document.getElementById("outputBox").style.display = "block";
+  let command = `yt-dlp -f "${format}" "${url}"`;
+
+  if (audioOnly) {
+    command += ' -x --audio-format mp3';
+  }
+
+  command += ' -P /storage/emulated/0/Termux';
+
+  result.textContent = command;
 }
 
 function copyCommand() {
-  const text = document.getElementById("result").textContent;
-  navigator.clipboard.writeText(text).then(() => {
-    alert("✅ کپی شد!");
-  }).catch(() => {
-    alert("❌ کپی نشد!");
+  const command = document.getElementById("result").textContent;
+  if (!command) return;
+  navigator.clipboard.writeText(command).then(() => {
+    alert("دستور کپی شد!");
   });
 }
 
 function shareCommand() {
-  const text = document.getElementById("result").textContent;
-  if (navigator.share) {
-    navigator.share({
-      title: 'yt-dlp command',
-      text: text
-    });
-  } else {
-    alert("اشتراک‌گذاری در این مرورگر پشتیبانی نمی‌شود.");
+  const command = document.getElementById("result").textContent;
+  if (!navigator.share || !command) {
+    alert("اشتراک‌گذاری توسط مرورگر پشتیبانی نمی‌شود.");
+    return;
   }
+
+  navigator.share({
+    title: 'yt-dlp command',
+    text: command
+  }).catch(() => alert("اشتراک‌گذاری لغو شد."));
 }

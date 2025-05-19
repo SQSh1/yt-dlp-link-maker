@@ -1,60 +1,109 @@
-# yt-dlp Link Maker
+# 🎬 yt-dlp لینک‌ساز برای ترموکس
 
-A simple browser-based tool to generate `yt-dlp` download commands for YouTube videos and playlists.  
-Optimized for **Termux** on Android and works perfectly in Chromium-based browsers like **Cromite**.
-
----
-
-## Features
-
-- Automatically detects whether the link is a single video or a playlist  
-- Generates a clean `yt-dlp` command ready to copy and paste into Termux  
-- Fully client-side â€“ no server, no data collection  
-- Designed for mobile-first use with a lightweight and responsive UI
+**yt-dlp لینک‌ساز** ابزاری ساده و کاربردی است که به شما کمک می‌کند دستورات `yt-dlp` را برای دانلود ویدیو یا صوت از یوتیوب در محیط ترموکس به‌صورت خودکار تولید کنید. این ابزار با رابط کاربری آسان برای کاربران اندروید طراحی شده تا تجربه دانلود را بهبود ببخشد.
 
 ---
 
-## How to Use
+## ✨ ویژگی‌ها
 
-1. Paste a YouTube video or playlist URL into the input field.  
-2. Choose whether you want to download a single video or the entire playlist.  
-3. Click the **Generate** button.  
-4. Copy the generated command and paste it into **Termux** to start downloading.
-
----
-
-## Output Example
-
-```bash
-yt-dlp "https://youtu.be/abc123"
-```
+- تولید دستور `yt-dlp` برای دانلود ویدیو، پلی‌لیست یا صوت  
+- انتخاب فرمت خروجی (ویدیو یا فقط صوت)  
+- تبدیل خودکار به فرمت MP3  
+- کپی یا اشتراک‌گذاری دستور تولیدشده  
+- ذخیره فایل‌ها در مسیر قابل دسترس در حافظه داخلی  
 
 ---
 
-## Planned Features
+## 📋 پیش‌نیازها
 
-- Quality and format selection (e.g., 720p, audio-only)  
-- Custom output directory support (e.g., `/storage/emulated/0/Download/Termux`)  
-- Dark mode interface  
-- Auto-copy to clipboard functionality
+قبل از استفاده، مطمئن شوید ابزارهای زیر در ترموکس نصب شده‌اند:
 
----
-
-## Live Demo
-
-Try the tool live on **GitHub Pages**:  
-[yt-dlp-link-maker](https://sqsh1.github.io/yt-dlp-link-maker/)
+- `yt-dlp`: برای دانلود محتوا از یوتیوب  
+- `termux-storage`: برای دسترسی به حافظه داخلی  
 
 ---
 
-## License
+## 📥 نصب
 
-This project is for educational use only. Please respect [YouTube's Terms of Service](https://www.youtube.com/static?template=terms).
+1. **نصب ترموکس**  
+   ترموکس را از [Google Play](https://play.google.com/store/apps/details?id=com.termux) یا [F-Droid](https://f-droid.org/packages/com.termux/) روی دستگاه اندرویدی خود نصب کنید.
+
+2. **نصب پیش‌نیازها**  
+   دستورات زیر را در ترموکس اجرا کنید:  
+   ```
+   pkg update && pkg upgrade
+   pkg install yt-dlp
+   termux-setup-storage
+   ```
+
+3. **دریافت پروژه**  
+   این مخزن را کلون کنید یا فایل‌ها را دانلود کنید:  
+   ```
+   git clone https://github.com/your-username/your-repo.git
+   cd your-repo
+   ```
+
+   **توجه**: `your-username/your-repo` را با آدرس واقعی مخزن خود جایگزین کنید.
 
 ---
 
-## Author
+## 🚀 نحوه استفاده
 
-Created by [SQ](https://github.com/SQSh1).
+1. لینک یوتیوب (ویدیو یا پلی‌لیست) را وارد کنید.  
+2. فرمت خروجی (ویدیو یا صوت) را انتخاب کنید.  
+3. در صورت نیاز، گزینه «تبدیل به MP3» را فعال کنید.  
+4. روی دکمه «ایجاد دستور» کلیک کنید.  
+5. دستور تولیدشده را کپی یا اشتراک‌گذاری کنید و در ترموکس اجرا کنید.  
 
 ---
+
+## 📂 مسیر ذخیره فایل‌ها
+
+فایل‌های دانلودشده در مسیر زیر ذخیره می‌شوند:  
+- `~/storage/shared/Termux/`  
+- معادل: `/storage/emulated/0/Termux/`  
+
+این مسیر از طریق فایل منیجر اندروید قابل دسترسی است.  
+
+**هشدار**: قبل از دانلود، مطمئن شوید دستور `termux-setup-storage` را اجرا کرده‌اید تا ترموکس به حافظه داخلی دسترسی داشته باشد.
+
+---
+
+## 🛠️ عیب‌یابی
+
+- **خطای دسترسی به حافظه**:  
+  دستور `termux-setup-storage` را دوباره اجرا کنید.  
+- **عدم دانلود محتوا**:  
+  مطمئن شوید `yt-dlp` به‌روز است:  
+  ```
+  pkg update yt-dlp
+  ```
+
+برای گزارش مشکلات، یک [Issue](https://github.com/your-username/your-repo/issues) در مخزن GitHub باز کنید.
+
+---
+
+## 🤝 مشارکت
+
+از مشارکت شما استقبال می‌کنیم! برای بهبود پروژه:  
+- مخزن را فورک کنید.  
+- تغییرات خود را اعمال کنید و [Pull Request](https://github.com/your-username/your-repo/pulls) ارسال کنید.  
+- ایده‌ها و باگ‌ها را از طریق [Issues](https://github.com/your-username/your-repo/issues) گزارش دهید.  
+
+---
+
+## 📌 درباره
+
+این ابزار توسط **[SQ]** طراحی شده تا دانلود از یوتیوب در اندروید را ساده‌تر کند. اگر پروژه را پسندیدید، با دادن ⭐ به مخزن از ما حمایت کنید!
+
+---
+
+## 📜 مجوز
+
+این پروژه تحت [MIT License](https://opensource.org/licenses/MIT) منتشر شده است.
+
+---
+
+## ⭐ حمایت
+
+اگر این ابزار برایتان مفید بود، لطف

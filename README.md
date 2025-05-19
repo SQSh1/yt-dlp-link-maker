@@ -1,109 +1,111 @@
-# 🎬 yt-dlp لینک‌ساز برای ترموکس
+# 🎬 yt-dlp Link Generator for Termux
 
-**yt-dlp لینک‌ساز** ابزاری ساده و کاربردی است که به شما کمک می‌کند دستورات `yt-dlp` را برای دانلود ویدیو یا صوت از یوتیوب در محیط ترموکس به‌صورت خودکار تولید کنید. این ابزار با رابط کاربری آسان برای کاربران اندروید طراحی شده تا تجربه دانلود را بهبود ببخشد.
+**yt-dlp Link Generator** is a simple and user-friendly tool that helps you automatically generate `yt-dlp` commands to download videos or audio from YouTube within the Termux environment. Designed with an easy-to-use interface, this tool enhances the downloading experience for Android users.
 
----
-
-## ✨ ویژگی‌ها
-
-- تولید دستور `yt-dlp` برای دانلود ویدیو، پلی‌لیست یا صوت  
-- انتخاب فرمت خروجی (ویدیو یا فقط صوت)  
-- تبدیل خودکار به فرمت MP3  
-- کپی یا اشتراک‌گذاری دستور تولیدشده  
-- ذخیره فایل‌ها در مسیر قابل دسترس در حافظه داخلی  
+🔗 [Persian🇮🇷](README.fa.md)
 
 ---
 
-## 📋 پیش‌نیازها
+## ✨ Features
 
-قبل از استفاده، مطمئن شوید ابزارهای زیر در ترموکس نصب شده‌اند:
-
-- `yt-dlp`: برای دانلود محتوا از یوتیوب  
-- `termux-storage`: برای دسترسی به حافظه داخلی  
+- Generate `yt-dlp` commands for downloading videos, playlists, or audio  
+- Choose output format (video or audio only)  
+- Automatically convert to MP3 format  
+- Copy or share the generated command  
+- Save files to an accessible path in internal storage  
 
 ---
 
-## 📥 نصب
+## 📋 Prerequisites
 
-1. **نصب ترموکس**  
-   ترموکس را از [Google Play](https://play.google.com/store/apps/details?id=com.termux) یا [F-Droid](https://f-droid.org/packages/com.termux/) روی دستگاه اندرویدی خود نصب کنید.
+Before using the tool, ensure the following are installed in Termux:
 
-2. **نصب پیش‌نیازها**  
-   دستورات زیر را در ترموکس اجرا کنید:  
+- `yt-dlp`: For downloading content from YouTube  
+- `termux-storage`: For accessing internal storage  
+
+---
+
+## 📥 Installation
+
+1. **Install Termux**  
+   Download and install Termux on your Android device from [Google Play](https://play.google.com/store/apps/details?id=com.termux) or [F-Droid](https://f-droid.org/packages/com.termux/).
+
+2. **Install Prerequisites**  
+   Run the following commands in Termux:  
    ```
    pkg update && pkg upgrade
    pkg install yt-dlp
    termux-setup-storage
    ```
 
-3. **دریافت پروژه**  
-   این مخزن را کلون کنید یا فایل‌ها را دانلود کنید:  
+3. **Get the Project**  
+   Clone this repository or download the project files:  
    ```
    git clone https://github.com/your-username/your-repo.git
    cd your-repo
    ```
 
-   **توجه**: `your-username/your-repo` را با آدرس واقعی مخزن خود جایگزین کنید.
+   **Note**: Replace `your-username/your-repo` with the actual address of your repository.
 
 ---
 
-## 🚀 نحوه استفاده
+## 🚀 Usage
 
-1. لینک یوتیوب (ویدیو یا پلی‌لیست) را وارد کنید.  
-2. فرمت خروجی (ویدیو یا صوت) را انتخاب کنید.  
-3. در صورت نیاز، گزینه «تبدیل به MP3» را فعال کنید.  
-4. روی دکمه «ایجاد دستور» کلیک کنید.  
-5. دستور تولیدشده را کپی یا اشتراک‌گذاری کنید و در ترموکس اجرا کنید.  
+1. Enter the YouTube link (video or playlist).  
+2. Select the output format (video or audio).  
+3. If needed, enable the "Convert to MP3" option.  
+4. Click the "Generate Command" button.  
+5. Copy or share the generated command and execute it in Termux.  
 
 ---
 
-## 📂 مسیر ذخیره فایل‌ها
+## 📂 File Storage Path
 
-فایل‌های دانلودشده در مسیر زیر ذخیره می‌شوند:  
+Downloaded files will be saved in the following path:  
 - `~/storage/shared/Termux/`  
-- معادل: `/storage/emulated/0/Termux/`  
+- Equivalent: `/storage/emulated/0/Termux/`  
 
-این مسیر از طریق فایل منیجر اندروید قابل دسترسی است.  
+This path is accessible via your Android file manager.  
 
-**هشدار**: قبل از دانلود، مطمئن شوید دستور `termux-setup-storage` را اجرا کرده‌اید تا ترموکس به حافظه داخلی دسترسی داشته باشد.
+**Warning**: Before downloading, ensure you have run `termux-setup-storage` to grant Termux access to internal storage.
 
 ---
 
-## 🛠️ عیب‌یابی
+## 🛠️ Troubleshooting
 
-- **خطای دسترسی به حافظه**:  
-  دستور `termux-setup-storage` را دوباره اجرا کنید.  
-- **عدم دانلود محتوا**:  
-  مطمئن شوید `yt-dlp` به‌روز است:  
+- **Storage Access Error**:  
+  Run `termux-setup-storage` again.  
+- **Content Not Downloading**:  
+  Ensure `yt-dlp` is up to date:  
   ```
   pkg update yt-dlp
   ```
 
-برای گزارش مشکلات، یک [Issue](https://github.com/your-username/your-repo/issues) در مخزن GitHub باز کنید.
+To report issues, open an [Issue](https://github.com/your-username/your-repo/issues) on the GitHub repository.
 
 ---
 
-## 🤝 مشارکت
+## 🤝 Contributing
 
-از مشارکت شما استقبال می‌کنیم! برای بهبود پروژه:  
-- مخزن را فورک کنید.  
-- تغییرات خود را اعمال کنید و [Pull Request](https://github.com/your-username/your-repo/pulls) ارسال کنید.  
-- ایده‌ها و باگ‌ها را از طریق [Issues](https://github.com/your-username/your-repo/issues) گزارش دهید.  
-
----
-
-## 📌 درباره
-
-این ابزار توسط **[SQ]** طراحی شده تا دانلود از یوتیوب در اندروید را ساده‌تر کند. اگر پروژه را پسندیدید، با دادن ⭐ به مخزن از ما حمایت کنید!
+We welcome your contributions! To improve this project:  
+- Fork the repository.  
+- Make your changes and submit a [Pull Request](https://github.com/your-username/your-repo/pulls).  
+- Report ideas or bugs via [Issues](https://github.com/your-username/your-repo/issues).  
 
 ---
 
-## 📜 مجوز
+## 📌 About
 
-این پروژه تحت [MIT License](https://opensource.org/licenses/MIT) منتشر شده است.
+This tool was designed by **[SQ]** to simplify downloading from YouTube on Android. If you like this project, please support us by giving a ⭐ to the repository!
 
 ---
 
-## ⭐ حمایت
+## 📜 License
 
-اگر این ابزار برایتان مفید بود، لطف
+This project is licensed under the [MIT License](https://opensource.org/licenses/MIT).
+
+---
+
+## ⭐ Support
+
+If you found this tool helpful, please give the repository a star and share it with your friends! 🌟

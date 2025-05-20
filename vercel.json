@@ -1,9 +1,11 @@
 {
-  "version": 2,
-  "builds": [
-    { "src": "api/parse.js", "use": "@vercel/node" }
-  ],
-  "routes": [
-    { "src": "/api/parse", "dest": "api/parse.js" }
+  "buildCommand": "chmod +x yt-dlp",
+  "outputDirectory": "",
+  "cleanUrls": true,
+  "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "/api/parse.js"
+    }
   ]
 }

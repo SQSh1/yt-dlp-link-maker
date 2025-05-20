@@ -47,3 +47,25 @@ function showToast(message) {
     setTimeout(() => toast.remove(), 500);
   }, 2000);
 }
+
+async function fetchFormats() {
+  const url = document.getElementById('urlInput').value;
+  if (!url.trim()) {
+    alert('لطفاً لینک ویدیو را وارد کنید.');
+    return;
+  }
+
+  const res = await fetch('/api/parse.js', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ url, command: '-F' })
+  });
+
+  const data = await res.json();
+  const outputEl = document.getElementById('formatOutput');
+  if (data.success) {
+    outputEl.innerText = data.output;
+  } else {
+    outputEl.innerText = 'خطا در اجرای yt-dlp:\n' + data.output;
+  }
+}

@@ -1,113 +1,141 @@
 <!DOCTYPE html>
-<html lang="fa">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ابزار ساخت دستور yt-dlp</title>
+  <title>yt-dlp Terminal Link Maker</title>
   <style>
+    :root {
+      --bg-color: #f9f9f9;
+      --text-color: #111;
+      --card-color: #fff;
+      --accent: #0055ff;
+    }
+
+    [data-theme="dark"] {
+      --bg-color: #121212;
+      --text-color: #eee;
+      --card-color: #1e1e1e;
+      --accent: #3399ff;
+    }
+
     body {
-      font-family: "Vazirmatn", sans-serif;
-      background: linear-gradient(135deg, #e0f7fa, #e1bee7);
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      font-family: 'Segoe UI', sans-serif;
       margin: 0;
-      padding: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-    }
-    .container {
-      background: white;
-      border-radius: 1rem;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
       padding: 2rem;
-      max-width: 500px;
-      width: 90%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
+
     h1 {
-      text-align: center;
-      color: #6a1b9a;
-      margin-bottom: 1.5rem;
+      font-size: 2rem;
+      margin-bottom: 1rem;
     }
-    label {
-      font-weight: bold;
-      display: block;
-      margin-bottom: 0.5rem;
+
+    .card {
+      background-color: var(--card-color);
+      padding: 1.5rem;
+      border-radius: 1rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 480px;
     }
-    input, select, button, textarea {
+
+    input, select {
       width: 100%;
       padding: 0.75rem;
-      margin-bottom: 1rem;
+      margin-top: 1rem;
       border: 1px solid #ccc;
       border-radius: 0.5rem;
-      font-size: 1rem;
+      background: var(--bg-color);
+      color: var(--text-color);
     }
+
     button {
-      background-color: #8e24aa;
+      margin-top: 1rem;
+      padding: 0.75rem;
+      width: 100%;
+      background: var(--accent);
       color: white;
       border: none;
+      border-radius: 0.5rem;
+      font-weight: bold;
       cursor: pointer;
     }
-    button:hover {
-      background-color: #6a1b9a;
-    }
+
     .output {
-      background: #f3e5f5;
+      margin-top: 1rem;
       padding: 1rem;
+      background: var(--bg-color);
+      border: 1px solid #ccc;
       border-radius: 0.5rem;
-      font-family: monospace;
-      direction: ltr;
+      word-break: break-all;
+      position: relative;
     }
+
     .copy-btn {
-      background: #4caf50;
+      position: absolute;
+      top: 0.5rem;
+      right: 0.5rem;
+      background: var(--accent);
+      border: none;
       color: white;
-      margin-top: -0.5rem;
-      font-size: 0.9rem;
+      padding: 0.25rem 0.5rem;
+      border-radius: 0.25rem;
+      cursor: pointer;
+      font-size: 0.8rem;
+    }
+
+    .theme-switch {
+      margin-top: 1rem;
+      cursor: pointer;
+      text-decoration: underline;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>ساخت دستور yt-dlp</h1>
-    <label for="link">لینک یوتیوب:</label>
-    <input type="text" id="link" placeholder="https://www.youtube.com/watch?v=..." />
-
-    <label for="type">نوع دانلود:</label>
-    <select id="type">
-      <option value="video">ویدیو (mp4)</option>
-      <option value="audio">فقط صدا (mp3)</option>
+  <h1>yt-dlp لینک‌ساز ترموکس</h1>
+  <div class="card">
+    <label for="url">لینک ویدیوی یوتیوب:</label>
+    <input type="text" id="url" placeholder="https://youtube.com/watch?v=..." />
+    <select id="format">
+      <option value="bestvideo+bestaudio">MP4 با کیفیت بالا</option>
+      <option value="bestaudio">فقط صدا (MP3)</option>
     </select>
-
     <button onclick="generateCommand()">ساخت دستور</button>
-
-    <div class="output" id="output"></div>
-    <button class="copy-btn" onclick="copyCommand()">کپی دستور</button>
+    <div id="output" class="output" style="display: none;">
+      <button class="copy-btn" onclick="copyCommand()">کپی</button>
+      <pre id="command"></pre>
+    </div>
+    <div class="theme-switch" onclick="toggleTheme()">تغییر حالت شب/روز</div>
   </div>
 
   <script>
+    const output = document.getElementById('output');
+    const commandBox = document.getElementById('command');
+
     function generateCommand() {
-      const link = document.getElementById("link").value.trim();
-      const type = document.getElementById("type").value;
-      let command = "yt-dlp ";
-
-      if (!link.startsWith("http")) {
-        document.getElementById("output").innerText = "لطفاً لینک معتبر وارد کنید";
-        return;
-      }
-
-      if (type === "audio") {
-        command += "-x --audio-format mp3 \"" + link + "\"";
-      } else {
-        command += "-f bestvideo+bestaudio \"" + link + "\"";
-      }
-
-      document.getElementById("output").innerText = command;
+      const url = document.getElementById('url').value.trim();
+      const format = document.getElementById('format').value;
+      if (!url) return;
+      const cmd = `yt-dlp -f "${format}" -o "/storage/emulated/0/Download/%(title)s.%(ext)s" "${url}"`;
+      commandBox.textContent = cmd;
+      output.style.display = 'block';
     }
 
     function copyCommand() {
-      const text = document.getElementById("output").innerText;
-      navigator.clipboard.writeText(text).then(() => {
-        alert("دستور کپی شد!");
+      navigator.clipboard.writeText(commandBox.textContent).then(() => {
+        alert('دستور کپی شد!');
       });
+    }
+
+    function toggleTheme() {
+      const html = document.documentElement;
+      const isDark = html.getAttribute('data-theme') === 'dark';
+      html.setAttribute('data-theme', isDark ? 'light' : 'dark');
     }
   </script>
 </body>

@@ -1,35 +1,114 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="fa">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>yt-dlp Link Maker</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      darkMode: 'class',
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ابزار ساخت دستور yt-dlp</title>
+  <style>
+    body {
+      font-family: "Vazirmatn", sans-serif;
+      background: linear-gradient(135deg, #e0f7fa, #e1bee7);
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
     }
-  </script>
+    .container {
+      background: white;
+      border-radius: 1rem;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+      padding: 2rem;
+      max-width: 500px;
+      width: 90%;
+    }
+    h1 {
+      text-align: center;
+      color: #6a1b9a;
+      margin-bottom: 1.5rem;
+    }
+    label {
+      font-weight: bold;
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+    input, select, button, textarea {
+      width: 100%;
+      padding: 0.75rem;
+      margin-bottom: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 0.5rem;
+      font-size: 1rem;
+    }
+    button {
+      background-color: #8e24aa;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #6a1b9a;
+    }
+    .output {
+      background: #f3e5f5;
+      padding: 1rem;
+      border-radius: 0.5rem;
+      font-family: monospace;
+      direction: ltr;
+    }
+    .copy-btn {
+      background: #4caf50;
+      color: white;
+      margin-top: -0.5rem;
+      font-size: 0.9rem;
+    }
+  </style>
 </head>
-<body class="bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 min-h-screen flex flex-col justify-center items-center p-6 space-y-6">
+<body>
+  <div class="container">
+    <h1>ساخت دستور yt-dlp</h1>
+    <label for="link">لینک یوتیوب:</label>
+    <input type="text" id="link" placeholder="https://www.youtube.com/watch?v=..." />
 
-  <div class="max-w-xl w-full text-center space-y-4">
-    <h1 class="text-3xl font-bold">YT-DLP Link Maker</h1>
-    <p class="text-lg">ابزاری ساده و کاربردی برای ساخت دستور yt-dlp با قابلیت تشخیص لینک ویدیو یا پلی‌لیست.</p>
+    <label for="type">نوع دانلود:</label>
+    <select id="type">
+      <option value="video">ویدیو (mp4)</option>
+      <option value="audio">فقط صدا (mp3)</option>
+    </select>
 
-    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-      <a href="simple.html" class="bg-blue-600 text-white py-2 rounded hover:bg-blue-700">نسخه ساده</a>
-      <a href="advanced.html" class="bg-purple-600 text-white py-2 rounded hover:bg-purple-700">نسخه پیشرفته</a>
-    </div>
+    <button onclick="generateCommand()">ساخت دستور</button>
 
-    <button onclick="toggleDarkMode()" class="mt-4 text-sm text-gray-500 hover:underline">تغییر حالت تاریک/روشن</button>
+    <div class="output" id="output"></div>
+    <button class="copy-btn" onclick="copyCommand()">کپی دستور</button>
   </div>
 
   <script>
-    function toggleDarkMode() {
-      document.documentElement.classList.toggle('dark');
+    function generateCommand() {
+      const link = document.getElementById("link").value.trim();
+      const type = document.getElementById("type").value;
+      let command = "yt-dlp ";
+
+      if (!link.startsWith("http")) {
+        document.getElementById("output").innerText = "لطفاً لینک معتبر وارد کنید";
+        return;
+      }
+
+      if (type === "audio") {
+        command += "-x --audio-format mp3 \"" + link + "\"";
+      } else {
+        command += "-f bestvideo+bestaudio \"" + link + "\"";
+      }
+
+      document.getElementById("output").innerText = command;
+    }
+
+    function copyCommand() {
+      const text = document.getElementById("output").innerText;
+      navigator.clipboard.writeText(text).then(() => {
+        alert("دستور کپی شد!");
+      });
     }
   </script>
-
 </body>
 </html>

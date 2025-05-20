@@ -1,58 +1,103 @@
 <!DOCTYPE html>
-<html lang="fa">
+<html lang="en" class="dark">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>yt-dlp Link Maker - Advanced</title>
-  <style>
-    body {
-      font-family: sans-serif;
-      padding: 20px;
-      background: #f9f9f9;
-      text-align: center;
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>yt-dlp Advanced Downloader</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    // حالت تاریک پیش‌فرض
+    tailwind.config = {
+      darkMode: 'class',
     }
-    .section {
-      margin-bottom: 20px;
-    }
-    input[type="text"] {
-      width: 90%;
-      padding: 10px;
-      font-size: 16px;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-    }
-    button {
-      padding: 10px 20px;
-      font-size: 16px;
-      border-radius: 6px;
-      background-color: #28a745;
-      color: white;
-      border: none;
-      cursor: pointer;
-      margin-top: 10px;
-    }
-    #formatOutput {
-      background: #e8ffe8;
-      border: 1px solid #c4e3c4;
-      border-radius: 8px;
-      padding: 10px;
-      white-space: pre-wrap;
-      text-align: left;
-    }
-  </style>
+  </script>
 </head>
-<body>
-  <h2>نسخه پیشرفته yt-dlp Link Maker</h2>
+<body class="bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300 min-h-screen p-4">
 
-  <div class="section">
-    <label for="urlInput">لینک YouTube:</label><br>
-    <input type="text" id="urlInput" placeholder="https://www.youtube.com/watch?v=..." />
-    <br>
-    <button onclick="fetchFormats()">نمایش فرمت‌ها</button>
+  <div class="max-w-2xl mx-auto space-y-6">
+    <header class="flex justify-between items-center">
+      <h1 class="text-2xl font-bold">YT-DLP Link Maker - Advanced</h1>
+      <button onclick="toggleDarkMode()" class="px-3 py-1 border rounded-md">Toggle Dark</button>
+    </header>
+
+    <div class="space-y-2">
+      <label for="videoUrl" class="block text-lg font-semibold">YouTube Video URL:</label>
+      <input id="videoUrl" type="url" placeholder="https://www.youtube.com/watch?v=..." class="w-full px-4 py-2 rounded border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800" />
+      <button onclick="fetchVideoInfo()" class="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700">Analyze</button>
+    </div>
+
+    <div id="result" class="space-y-4 hidden">
+      <h2 class="text-xl font-semibold">Available Formats</h2>
+      <div id="formats" class="grid grid-cols-1 sm:grid-cols-2 gap-3"></div>
+
+      <div>
+        <h3 class="text-lg font-semibold">yt-dlp Command</h3>
+        <div class="relative">
+          <textarea id="ytCommand" class="w-full p-2 border rounded bg-gray-50 dark:bg-gray-800" readonly></textarea>
+          <button onclick="copyCommand()" class="absolute top-2 right-2 px-3 py-1 bg-green-500 text-white rounded">Copy</button>
+        </div>
+      </div>
+    </div>
   </div>
 
-  <div id="formatOutput" class="section"></div>
+  <script>
+    const apiBase = 'https://yt-dlp-api-h9nv.onrender.com';
 
-  <script src="main.js"></script>
+    function toggleDarkMode() {
+      document.documentElement.classList.toggle('dark');
+    }
+
+    async function fetchVideoInfo() {
+      const url = document.getElementById('videoUrl').value.trim();
+      if (!url) return alert('Please enter a YouTube URL');
+
+      const resultDiv = document.getElementById('result');
+      const formatsDiv = document.getElementById('formats');
+      const ytCommand = document.getElementById('ytCommand');
+      formatsDiv.innerHTML = '';
+      ytCommand.value = '';
+      resultDiv.classList.add('hidden');
+
+      try {
+        const response = await fetch(`${apiBase}/video/?video_url=${encodeURIComponent(url)}`);
+        const data = await response.json();
+
+        if (data.error) {
+          return alert(data.error);
+        }
+
+        resultDiv.classList.remove('hidden');
+        const commandLines = [];
+
+        data.links.forEach(link => {
+          const { format, itag, url: dlUrl } = link;
+
+          const line = `yt-dlp -f "${itag}" -o "%(title)s.%(ext)s" "${url}"`;
+          commandLines.push(line);
+
+          const card = document.createElement('div');
+          card.className = 'p-3 border rounded bg-white dark:bg-gray-800';
+          card.innerHTML = `
+            <div><strong>Format:</strong> ${format}</div>
+            <div><strong>Quality:</strong> ${itag}</div>
+          `;
+          formatsDiv.appendChild(card);
+        });
+
+        ytCommand.value = commandLines.join('\n\n');
+
+      } catch (e) {
+        alert('Failed to fetch video info.');
+        console.error(e);
+      }
+    }
+
+    function copyCommand() {
+      const cmd = document.getElementById('ytCommand');
+      cmd.select();
+      document.execCommand('copy');
+    }
+  </script>
+
 </body>
 </html>

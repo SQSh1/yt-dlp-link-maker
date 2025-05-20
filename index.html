@@ -1,105 +1,35 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>yt-dlp لینک‌ساز ترموکس</title>
-  <style>
-    body {
-      font-family: sans-serif;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: flex-start;
-      min-height: 100vh;
-      margin: 0;
-      padding: 2rem;
-      background: #f3f4f6;
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>yt-dlp Link Maker</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
     }
-
-    h1 {
-      font-size: 1.8rem;
-      margin-bottom: 1rem;
-    }
-
-    input, select, button {
-      padding: 0.5rem 1rem;
-      margin: 0.5rem 0;
-      border-radius: 0.5rem;
-      border: 1px solid #ccc;
-      font-size: 1rem;
-    }
-
-    #command-box {
-      background: #fff;
-      border: 1px solid #ccc;
-      padding: 1rem;
-      margin-top: 1rem;
-      width: 100%;
-      max-width: 600px;
-      font-family: monospace;
-      white-space: pre-wrap;
-      position: relative;
-      border-radius: 0.75rem;
-    }
-
-    .copy-btn {
-      position: absolute;
-      top: 0.5rem;
-      right: 0.5rem;
-      border: none;
-      background: #4f46e5;
-      color: #fff;
-      padding: 0.3rem 0.6rem;
-      border-radius: 0.5rem;
-      cursor: pointer;
-    }
-
-    .copy-btn:hover {
-      background: #4338ca;
-    }
-  </style>
+  </script>
 </head>
-<body>
-  <h1>لینک‌ساز yt-dlp برای ترموکس</h1>
+<body class="bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 min-h-screen flex flex-col justify-center items-center p-6 space-y-6">
 
-  <input type="text" id="url" placeholder="لینک یوتیوب را وارد کنید" size="50"/>
+  <div class="max-w-xl w-full text-center space-y-4">
+    <h1 class="text-3xl font-bold">YT-DLP Link Maker</h1>
+    <p class="text-lg">ابزاری ساده و کاربردی برای ساخت دستور yt-dlp با قابلیت تشخیص لینک ویدیو یا پلی‌لیست.</p>
 
-  <select id="format">
-    <option value="bestvideo+bestaudio">ویدیو HD (پیش‌فرض)</option>
-    <option value="22">MP4 - 720p (فرمت 22)</option>
-    <option value="18">MP4 - 360p (فرمت 18)</option>
-    <option value="251">فقط صدا - WebM (فرمت 251)</option>
-    <option value="bestaudio">فقط صدا - بهترین کیفیت</option>
-    <option value="best">ویدیو با صدا - یک‌پارچه</option>
-  </select>
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <a href="simple.html" class="bg-blue-600 text-white py-2 rounded hover:bg-blue-700">نسخه ساده</a>
+      <a href="advanced.html" class="bg-purple-600 text-white py-2 rounded hover:bg-purple-700">نسخه پیشرفته</a>
+    </div>
 
-  <button onclick="generateCommand()">تولید دستور ترموکس</button>
-
-  <div id="command-box" style="display:none;">
-    <button class="copy-btn" onclick="copyCommand()">کپی</button>
-    <code id="command-output"></code>
+    <button onclick="toggleDarkMode()" class="mt-4 text-sm text-gray-500 hover:underline">تغییر حالت تاریک/روشن</button>
   </div>
 
   <script>
-    function generateCommand() {
-      const url = document.getElementById("url").value.trim();
-      const format = document.getElementById("format").value;
-      if (!url) {
-        alert("لینک را وارد کنید");
-        return;
-      }
-      const cmd = `yt-dlp -f "${format}" "${url}"`;
-      document.getElementById("command-output").textContent = cmd;
-      document.getElementById("command-box").style.display = "block";
-    }
-
-    function copyCommand() {
-      const command = document.getElementById("command-output").textContent;
-      navigator.clipboard.writeText(command).then(() => {
-        alert("کپی شد!");
-      });
+    function toggleDarkMode() {
+      document.documentElement.classList.toggle('dark');
     }
   </script>
+
 </body>
 </html>

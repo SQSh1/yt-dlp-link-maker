@@ -1,115 +1,58 @@
-<!DOCTYPE html><html lang="fa" dir="rtl">
+<!DOCTYPE html>
+<html lang="fa">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>دانلود پیشرفته yt-dlp</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>yt-dlp Link Maker - Advanced</title>
   <style>
     body {
-      font-family: Vazirmatn, sans-serif;
-      margin: 0;
-      padding: 2rem;
-      background-color: #f8f9fa;
-      color: #212529;
-      transition: background-color 0.3s, color 0.3s;
-    }
-    .dark-mode {
-      background-color: #121212;
-      color: #f1f1f1;
-    }
-    .container {
-      max-width: 700px;
-      margin: auto;
-    }
-    h1 {
-      font-size: 1.8rem;
+      font-family: sans-serif;
+      padding: 20px;
+      background: #f9f9f9;
       text-align: center;
-      margin-bottom: 1rem;
     }
-    textarea, input[type="text"] {
-      width: 100%;
-      padding: 0.6rem;
-      font-size: 1rem;
+    .section {
+      margin-bottom: 20px;
+    }
+    input[type="text"] {
+      width: 90%;
+      padding: 10px;
+      font-size: 16px;
+      border-radius: 6px;
       border: 1px solid #ccc;
-      border-radius: 0.5rem;
-      margin-bottom: 1rem;
     }
     button {
-      padding: 0.6rem 1.2rem;
-      font-size: 1rem;
-      border: none;
-      border-radius: 0.5rem;
-      background-color: #007bff;
-      color: white;
-      cursor: pointer;
-      transition: background-color 0.3s;
-    }
-    button:hover {
-      background-color: #0056b3;
-    }
-    .output {
-      background-color: #e9ecef;
-      padding: 1rem;
-      border-radius: 0.5rem;
-      white-space: pre-wrap;
-      direction: ltr;
-      text-align: left;
-      position: relative;
-    }
-    .copy-btn {
-      position: absolute;
-      top: 1rem;
-      left: 1rem;
+      padding: 10px 20px;
+      font-size: 16px;
+      border-radius: 6px;
       background-color: #28a745;
+      color: white;
+      border: none;
+      cursor: pointer;
+      margin-top: 10px;
     }
-    .mode-toggle {
-      display: block;
-      margin: 1rem auto;
-      background-color: #6c757d;
+    #formatOutput {
+      background: #e8ffe8;
+      border: 1px solid #c4e3c4;
+      border-radius: 8px;
+      padding: 10px;
+      white-space: pre-wrap;
+      text-align: left;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>ابزار پیشرفته تولید دستور yt-dlp</h1>
-    <button class="mode-toggle" onclick="toggleDarkMode()">تغییر حالت شب/روز</button>
-    <input type="text" id="ytlink" placeholder="لینک یوتیوب را وارد کنید...">
-    <button onclick="analyzeLink()">تحلیل لینک (تشخیص فرمت‌ها)</button>
-    <div id="formatTable" style="margin-top:1rem;"></div>
-    <button onclick="generateCommand()">تولید دستور</button>
-    <div class="output" id="resultBox">
-      <button class="copy-btn" onclick="copyResult()">کپی</button>
-      <code id="result">دستور نهایی اینجا نمایش داده می‌شود...</code>
-    </div>
-  </div>  <script>
-    function toggleDarkMode() {
-      document.body.classList.toggle('dark-mode');
-    }
-    function analyzeLink() {
-      const link = document.getElementById("ytlink").value;
-      if (!link.includes("youtube")) {
-        alert("لینک معتبر نیست");
-        return;
-      }
-      document.getElementById("formatTable").innerHTML = `
-        <p>این بخش بعداً با اطلاعات واقعی فرمت‌ها (خروجی yt-dlp -F) پر می‌شود.</p>
-        <ul>
-          <li><strong>22</strong> = MP4 - 720p (پیشنهادی)</li>
-          <li><strong>18</strong> = MP4 - 360p</li>
-          <li><strong>251</strong> = صوتی - WebM</li>
-        </ul>
-      `;
-    }
-    function generateCommand() {
-      const link = document.getElementById("ytlink").value;
-      const format = "22"; // پیش‌فرض ساده
-      const cmd = `yt-dlp -f ${format} "${link}"`;
-      document.getElementById("result").innerText = cmd;
-      navigator.clipboard.writeText(cmd);
-    }
-    function copyResult() {
-      const text = document.getElementById("result").innerText;
-      navigator.clipboard.writeText(text);
-      alert("کپی شد!");
-    }
-  </script></body>
+  <h2>نسخه پیشرفته yt-dlp Link Maker</h2>
+
+  <div class="section">
+    <label for="urlInput">لینک YouTube:</label><br>
+    <input type="text" id="urlInput" placeholder="https://www.youtube.com/watch?v=..." />
+    <br>
+    <button onclick="fetchFormats()">نمایش فرمت‌ها</button>
+  </div>
+
+  <div id="formatOutput" class="section"></div>
+
+  <script src="main.js"></script>
+</body>
 </html>

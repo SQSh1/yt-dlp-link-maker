@@ -1,137 +1,103 @@
 <!DOCTYPE html>
-<html lang="fa">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>تولید دستور yt-dlp</title>
+  <title>yt-dlp لینک‌ساز ترموکس</title>
   <style>
     body {
       font-family: sans-serif;
-      background-color: #f8f9fa;
-      margin: 0;
-      padding: 2rem;
       display: flex;
       flex-direction: column;
       align-items: center;
+      justify-content: flex-start;
+      min-height: 100vh;
+      margin: 0;
+      padding: 2rem;
+      background: #f3f4f6;
     }
 
     h1 {
+      font-size: 1.8rem;
       margin-bottom: 1rem;
-      font-size: 1.5rem;
     }
 
-    .container {
-      max-width: 500px;
-      width: 100%;
-      background: white;
-      padding: 1.5rem;
-      border-radius: 1rem;
-      box-shadow: 0 0 12px rgba(0,0,0,0.1);
-    }
-
-    label {
-      display: block;
-      margin-bottom: 0.5rem;
-    }
-
-    input[type="text"] {
-      width: 100%;
-      padding: 0.5rem;
-      font-size: 1rem;
-      margin-bottom: 1rem;
+    input, select, button {
+      padding: 0.5rem 1rem;
+      margin: 0.5rem 0;
+      border-radius: 0.5rem;
       border: 1px solid #ccc;
-      border-radius: 0.5rem;
-    }
-
-    .formats {
-      margin-bottom: 1rem;
-    }
-
-    .formats label {
-      display: block;
-      margin-bottom: 0.3rem;
-    }
-
-    button {
-      background-color: #007bff;
-      color: white;
-      border: none;
-      padding: 0.6rem 1rem;
       font-size: 1rem;
-      border-radius: 0.5rem;
-      cursor: pointer;
     }
 
-    button:hover {
-      background-color: #0056b3;
-    }
-
-    .output {
+    #command-box {
+      background: #fff;
+      border: 1px solid #ccc;
+      padding: 1rem;
       margin-top: 1rem;
-      background-color: #f1f1f1;
-      padding: 0.8rem;
-      border-radius: 0.5rem;
+      width: 100%;
+      max-width: 600px;
+      font-family: monospace;
+      white-space: pre-wrap;
       position: relative;
+      border-radius: 0.75rem;
     }
 
     .copy-btn {
       position: absolute;
-      top: 0.4rem;
-      right: 0.4rem;
-      background: #6c757d;
+      top: 0.5rem;
+      right: 0.5rem;
       border: none;
-      color: white;
-      border-radius: 0.3rem;
-      padding: 0.2rem 0.5rem;
+      background: #4f46e5;
+      color: #fff;
+      padding: 0.3rem 0.6rem;
+      border-radius: 0.5rem;
       cursor: pointer;
-      font-size: 0.8rem;
+    }
+
+    .copy-btn:hover {
+      background: #4338ca;
     }
   </style>
 </head>
 <body>
-  <h1>سازنده دستور yt-dlp</h1>
-  <div class="container">
-    <label for="url">لینک ویدیو:</label>
-    <input type="text" id="url" placeholder="مثلاً https://youtu.be/abc123" />
+  <h1>لینک‌ساز yt-dlp برای ترموکس</h1>
 
-    <div class="formats">
-      <label><input type="radio" name="format" value="best" checked /> بهترین کیفیت (پیش‌فرض)</label>
-      <label><input type="radio" name="format" value="bv*+ba/b"> کیفیت خوب و ترکیبی</label>
-      <label><input type="radio" name="format" value="22"> کیفیت mp4 (720p)</label>
-      <label><input type="radio" name="format" value="18"> کیفیت mp4 (360p)</label>
-      <label><input type="radio" name="format" value="bestaudio"> فقط صدا (برای MP3)</label>
-    </div>
+  <input type="text" id="url" placeholder="لینک یوتیوب را وارد کنید" size="50"/>
 
-    <button onclick="generateCommand()">تولید دستور</button>
+  <select id="format">
+    <option value="bestvideo+bestaudio">ویدیو HD (پیش‌فرض)</option>
+    <option value="22">MP4 - 720p (فرمت 22)</option>
+    <option value="18">MP4 - 360p (فرمت 18)</option>
+    <option value="251">فقط صدا - WebM (فرمت 251)</option>
+    <option value="bestaudio">فقط صدا - بهترین کیفیت</option>
+    <option value="best">ویدیو با صدا - یک‌پارچه</option>
+  </select>
 
-    <div class="output" id="output" style="display:none;">
-      <button class="copy-btn" onclick="copyCommand()">کپی</button>
-      <code id="command"></code>
-    </div>
+  <button onclick="generateCommand()">تولید دستور ترموکس</button>
+
+  <div id="command-box" style="display:none;">
+    <button class="copy-btn" onclick="copyCommand()">کپی</button>
+    <code id="command-output"></code>
   </div>
 
   <script>
     function generateCommand() {
       const url = document.getElementById("url").value.trim();
-      const format = document.querySelector('input[name="format"]:checked').value;
+      const format = document.getElementById("format").value;
       if (!url) {
-        alert("لطفاً لینک ویدیو را وارد کنید.");
+        alert("لینک را وارد کنید");
         return;
       }
-
-      let command = `yt-dlp -f "${format}" "${url}"`;
-      if (format === "bestaudio") {
-        command += " --extract-audio --audio-format mp3";
-      }
-
-      document.getElementById("command").innerText = command;
-      document.getElementById("output").style.display = "block";
+      const cmd = `yt-dlp -f "${format}" "${url}"`;
+      document.getElementById("command-output").textContent = cmd;
+      document.getElementById("command-box").style.display = "block";
     }
 
     function copyCommand() {
-      const text = document.getElementById("command").innerText;
-      navigator.clipboard.writeText(text).then(() => {
-        alert("دستور کپی شد!");
+      const command = document.getElementById("command-output").textContent;
+      navigator.clipboard.writeText(command).then(() => {
+        alert("کپی شد!");
       });
     }
   </script>

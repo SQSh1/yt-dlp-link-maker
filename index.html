@@ -15,6 +15,7 @@
       flex-direction: column;
       align-items: center;
       min-height: 100vh;
+      box-sizing: border-box; /* جلوگیری از سرریز شدن محتوا */
     }
     h1 {
       font-size: 24px;
@@ -52,9 +53,10 @@
     }
     .container {
       text-align: center;
-      width: 80vw; /* عرض نسبی نسبت به viewport */
+      width: 90%; /* عرض نسبی برای حالت موبایلی */
       max-width: 800px; /* حداکثر عرض برای دسکتاپ */
       min-width: 600px; /* حداقل عرض برای جلوگیری از کوچک شدن بیش از حد */
+      margin: 0 auto; /* وسط‌چین کردن */
     }
     .section {
       margin-top: 20px;
@@ -113,7 +115,7 @@
       margin-bottom: 10px;
       text-align: center;
       font-size: 12px;
-      color: #888;
+      color: #A3DFFA; /* آبی کم حال */
     }
     .footer-box {
       display: inline-block;
@@ -122,10 +124,14 @@
       border-radius: 5px;
       border: 1px solid #444;
     }
-    @media (max-width: 1024px) {
+    @media (max-width: 767px) {
       .container {
-        width: 80vw; /* عرض نسبی برای موبایل */
-        min-width: 600px; /* حداقل عرض */
+        width: 100%; /* عرض کامل برای موبایل */
+        min-width: 0; /* حذف حداقل عرض برای موبایل */
+        max-width: none; /* حذف حداکثر عرض برای موبایل */
+      }
+      input, select, button {
+        max-width: 100%; /* عرض کامل برای المان‌ها در موبایل */
       }
     }
   </style>
@@ -266,7 +272,7 @@
     }
 
     function copyCommand() {
-      const command = `cd /storage/emulated/0/Termux\nyt-dlp "${videoUrl}" --format ${quality} --merge-output-format ${format}\nls`;
+      const command = document.getElementById('commandOutput').innerText;
       navigator.clipboard.writeText(command);
       const copySection = document.querySelector('.copy-section');
       copySection.classList.add('copied');

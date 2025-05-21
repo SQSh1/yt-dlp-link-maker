@@ -2,7 +2,7 @@
 <html lang="fa" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.8, maximum-scale=1.0, user-scalable=no">
   <title>ابزار دانلود از پلتفرم‌های مختلف</title>
   <style>
     body {
@@ -52,8 +52,9 @@
     }
     .container {
       text-align: center;
-      width: 100%;
-      max-width: 500px;
+      width: 80vw; /* عرض نسبی نسبت به viewport */
+      max-width: 800px; /* حداکثر عرض برای دسکتاپ */
+      min-width: 600px; /* حداقل عرض برای جلوگیری از کوچک شدن بیش از حد */
     }
     .section {
       margin-top: 20px;
@@ -106,6 +107,26 @@
     }
     .action-btn span {
       margin-left: 5px;
+    }
+    footer {
+      margin-top: 20px;
+      margin-bottom: 10px;
+      text-align: center;
+      font-size: 12px;
+      color: #888;
+    }
+    .footer-box {
+      display: inline-block;
+      background-color: #2F2F2F;
+      padding: 5px 10px;
+      border-radius: 5px;
+      border: 1px solid #444;
+    }
+    @media (max-width: 1024px) {
+      .container {
+        width: 80vw; /* عرض نسبی برای موبایل */
+        min-width: 600px; /* حداقل عرض */
+      }
     }
   </style>
 </head>
@@ -176,6 +197,12 @@
     </div>
   </div>
 
+  <footer>
+    <div class="footer-box">
+      Made by SQ
+    </div>
+  </footer>
+
   <script>
     function updateOptions() {
       const platform = document.getElementById('platformSelect').value;
@@ -186,7 +213,6 @@
       } else {
         videoOptions.style.display = 'none';
       }
-      // تنظیم گزینه‌های کیفیت بر اساس پلتفرم (اختیاری)
       if (platform === 'tiktok') {
         document.getElementById('qualitySelect').value = 'best';
         document.getElementById('formatSelect').value = 'mp4';
@@ -240,7 +266,7 @@
     }
 
     function copyCommand() {
-      const command = document.getElementById('commandOutput').innerText;
+      const command = `cd /storage/emulated/0/Termux\nyt-dlp "${videoUrl}" --format ${quality} --merge-output-format ${format}\nls`;
       navigator.clipboard.writeText(command);
       const copySection = document.querySelector('.copy-section');
       copySection.classList.add('copied');

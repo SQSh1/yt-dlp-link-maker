@@ -1,141 +1,140 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fa">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>yt-dlp Terminal Link Maker</title>
+  <meta charset="UTF-8">
+  <title>دانلود از یوتیوب</title>
   <style>
-    :root {
-      --bg-color: #f9f9f9;
-      --text-color: #111;
-      --card-color: #fff;
-      --accent: #0055ff;
-    }
-
-    [data-theme="dark"] {
-      --bg-color: #121212;
-      --text-color: #eee;
-      --card-color: #1e1e1e;
-      --accent: #3399ff;
-    }
-
     body {
-      background-color: var(--bg-color);
-      color: var(--text-color);
-      font-family: 'Segoe UI', sans-serif;
+      font-family: Arial, sans-serif;
       margin: 0;
-      padding: 2rem;
+      padding: 0;
+      background-color: #121212;
+      color: white;
       display: flex;
       flex-direction: column;
       align-items: center;
+      justify-content: center;
+      height: 100vh;
     }
-
     h1 {
-      font-size: 2rem;
-      margin-bottom: 1rem;
+      margin-bottom: 20px;
     }
-
-    .card {
-      background-color: var(--card-color);
-      padding: 1.5rem;
-      border-radius: 1rem;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-      width: 100%;
-      max-width: 480px;
+    input, select, button {
+      padding: 10px;
+      margin: 10px;
+      font-size: 16px;
+      border-radius: 5px;
+      width: 80%;
+      max-width: 400px;
     }
-
-    input, select {
-      width: 100%;
-      padding: 0.75rem;
-      margin-top: 1rem;
-      border: 1px solid #ccc;
-      border-radius: 0.5rem;
-      background: var(--bg-color);
-      color: var(--text-color);
-    }
-
     button {
-      margin-top: 1rem;
-      padding: 0.75rem;
-      width: 100%;
-      background: var(--accent);
+      background-color: #007BFF;
       color: white;
       border: none;
-      border-radius: 0.5rem;
-      font-weight: bold;
       cursor: pointer;
     }
-
-    .output {
-      margin-top: 1rem;
-      padding: 1rem;
-      background: var(--bg-color);
-      border: 1px solid #ccc;
-      border-radius: 0.5rem;
-      word-break: break-all;
-      position: relative;
+    button:hover {
+      background-color: #0056b3;
     }
-
-    .copy-btn {
-      position: absolute;
-      top: 0.5rem;
-      right: 0.5rem;
-      background: var(--accent);
-      border: none;
-      color: white;
-      padding: 0.25rem 0.5rem;
-      border-radius: 0.25rem;
-      cursor: pointer;
-      font-size: 0.8rem;
+    #qualitySection, #playlistSection {
+      display: none;
     }
-
-    .theme-switch {
-      margin-top: 1rem;
-      cursor: pointer;
-      text-decoration: underline;
+    .container {
+      text-align: center;
+      margin-top: 20px;
+    }
+    .info {
+      background-color: #333;
+      padding: 10px;
+      margin: 10px;
+      border-radius: 5px;
     }
   </style>
 </head>
 <body>
-  <h1>yt-dlp لینک‌ساز ترموکس</h1>
-  <div class="card">
-    <label for="url">لینک ویدیوی یوتیوب:</label>
-    <input type="text" id="url" placeholder="https://youtube.com/watch?v=..." />
-    <select id="format">
-      <option value="bestvideo+bestaudio">MP4 با کیفیت بالا</option>
-      <option value="bestaudio">فقط صدا (MP3)</option>
-    </select>
-    <button onclick="generateCommand()">ساخت دستور</button>
-    <div id="output" class="output" style="display: none;">
-      <button class="copy-btn" onclick="copyCommand()">کپی</button>
-      <pre id="command"></pre>
+  <h1>ابزار دانلود از یوتیوب</h1>
+
+  <div class="container">
+    <input type="text" id="videoUrl" placeholder="لینک ویدیو یوتیوب" />
+    <button onclick="fetchVideoData()">استخراج کیفیت‌ها</button>
+
+    <div id="formatsSection">
+      <h3>انتخاب کیفیت و فرمت:</h3>
+      <select id="qualitySelect">
+        <option value="">کیفیت انتخاب کنید</option>
+      </select>
+      <button onclick="downloadVideo()">دانلود ویدیو</button>
+      <button onclick="downloadAudio()">دانلود صدا (MP3)</button>
     </div>
-    <div class="theme-switch" onclick="toggleTheme()">تغییر حالت شب/روز</div>
+
+    <div id="playlistSection">
+      <h3>دانلود لیست پخش</h3>
+      <button onclick="downloadPlaylist()">دانلود لیست پخش</button>
+    </div>
+
+    <div id="errorSection" style="display:none; color: red;">
+      <p>لطفاً لینک معتبر وارد کنید!</p>
+    </div>
+
+    <div id="infoSection" class="info">
+      <h4>اطلاعات ویدیو</h4>
+      <p id="videoInfo"></p>
+    </div>
   </div>
 
   <script>
-    const output = document.getElementById('output');
-    const commandBox = document.getElementById('command');
+    async function fetchVideoData() {
+      const videoUrl = document.getElementById('videoUrl').value.trim();
+      if (!videoUrl) {
+        document.getElementById('errorSection').style.display = 'block';
+        return;
+      }
+      document.getElementById('errorSection').style.display = 'none';
 
-    function generateCommand() {
-      const url = document.getElementById('url').value.trim();
-      const format = document.getElementById('format').value;
-      if (!url) return;
-      const cmd = `yt-dlp -f "${format}" -o "/storage/emulated/0/Download/%(title)s.%(ext)s" "${url}"`;
-      commandBox.textContent = cmd;
-      output.style.display = 'block';
+      const response = await fetch(`/api/formats?url=${videoUrl}`);
+      const data = await response.json();
+
+      if (data.formats) {
+        const select = document.getElementById('qualitySelect');
+        select.innerHTML = `<option value="">کیفیت انتخاب کنید</option>`; // Reset
+
+        data.formats.forEach(format => {
+          const option = document.createElement('option');
+          option.value = format.itag;
+          option.textContent = `${format.quality} - ${format.format}`;
+          select.appendChild(option);
+        });
+
+        // Display video info
+        const videoInfo = document.getElementById('videoInfo');
+        videoInfo.innerHTML = `عنوان: ${data.title}<br>تاریخ آپلود: ${data.upload_date}`;
+        
+        // Show quality section
+        document.getElementById('formatsSection').style.display = 'block';
+      }
     }
 
-    function copyCommand() {
-      navigator.clipboard.writeText(commandBox.textContent).then(() => {
-        alert('دستور کپی شد!');
-      });
+    function downloadVideo() {
+      const quality = document.getElementById('qualitySelect').value;
+      const videoUrl = document.getElementById('videoUrl').value;
+      if (!quality) {
+        alert("لطفاً کیفیت را انتخاب کنید");
+        return;
+      }
+      const downloadLink = `/download?url=${videoUrl}&quality=${quality}`;
+      window.location.href = downloadLink;
     }
 
-    function toggleTheme() {
-      const html = document.documentElement;
-      const isDark = html.getAttribute('data-theme') === 'dark';
-      html.setAttribute('data-theme', isDark ? 'light' : 'dark');
+    function downloadAudio() {
+      const videoUrl = document.getElementById('videoUrl').value;
+      const downloadLink = `/download?url=${videoUrl}&audio=true`;
+      window.location.href = downloadLink;
+    }
+
+    function downloadPlaylist() {
+      const videoUrl = document.getElementById('videoUrl').value;
+      const downloadLink = `/download?url=${videoUrl}&playlist=true`;
+      window.location.href = downloadLink;
     }
   </script>
 </body>

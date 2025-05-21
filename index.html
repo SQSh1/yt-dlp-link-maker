@@ -1,53 +1,89 @@
 <!DOCTYPE html>
-<html lang="fa">
+<html lang="fa" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <title>دانلود از یوتیوب</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ابزار دانلود از یوتیوب</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
+      font-family: 'Vazirmatn', Arial, sans-serif;
       margin: 0;
-      padding: 0;
-      background-color: #121212;
-      color: white;
+      padding: 20px;
+      background-color: #1A1A1A;
+      color: #FFFFFF;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
-      height: 100vh;
+      min-height: 100vh;
     }
     h1 {
+      font-size: 24px;
       margin-bottom: 20px;
+      color: #00B7EB;
     }
     input, select, button {
-      padding: 10px;
-      margin: 10px;
+      padding: 12px;
+      margin: 10px 0;
       font-size: 16px;
-      border-radius: 5px;
-      width: 80%;
+      border-radius: 8px;
+      width: 100%;
       max-width: 400px;
+      box-sizing: border-box;
+    }
+    input {
+      background-color: #2F2F2F;
+      color: #FFFFFF;
+      border: 1px solid #444;
+    }
+    select {
+      background-color: #2F2F2F;
+      color: #FFFFFF;
+      border: 1px solid #444;
     }
     button {
-      background-color: #007BFF;
-      color: white;
+      background-color: #1E90FF;
+      color: #FFFFFF;
       border: none;
       cursor: pointer;
+      transition: background-color 0.3s ease;
     }
     button:hover {
-      background-color: #0056b3;
+      background-color: #00B7EB;
     }
-    #qualitySection, #playlistSection {
-      display: none;
+    .action-btn {
+      background-color: #555;
+      margin: 5px;
+    }
+    .action-btn:hover {
+      background-color: #777;
+    }
+    .action-btn.copied {
+      background-color: #1E90FF;
     }
     .container {
       text-align: center;
+      width: 100%;
+      max-width: 500px;
+    }
+    .section {
       margin-top: 20px;
+      background-color: #252525;
+      padding: 15px;
+      border-radius: 8px;
     }
     .info {
       background-color: #333;
       padding: 10px;
-      margin: 10px;
+      margin-top: 20px;
+      border-radius: 8px;
+      font-size: 14px;
+    }
+    .command {
+      background-color: #2F2F2F;
+      padding: 10px;
       border-radius: 5px;
+      margin-top: 10px;
+      word-wrap: break-word;
     }
   </style>
 </head>
@@ -55,86 +91,109 @@
   <h1>ابزار دانلود از یوتیوب</h1>
 
   <div class="container">
-    <input type="text" id="videoUrl" placeholder="لینک ویدیو یوتیوب" />
-    <button onclick="fetchVideoData()">استخراج کیفیت‌ها</button>
+    <input type="text" id="videoUrl" placeholder="لینک ویدیو یا پلی‌لیست یوتیوب" />
 
-    <div id="formatsSection">
-      <h3>انتخاب کیفیت و فرمت:</h3>
-      <select id="qualitySelect">
-        <option value="">کیفیت انتخاب کنید</option>
+    <div class="section">
+      <h3>انتخاب نوع دانلود:</h3>
+      <select id="downloadType" onchange="updateOptions()">
+        <option value="video">دانلود ویدیو</option>
+        <option value="audio">دانلود صدا (MP3)</option>
+        <option value="playlist">دانلود پلی‌لیست</option>
       </select>
-      <button onclick="downloadVideo()">دانلود ویدیو</button>
-      <button onclick="downloadAudio()">دانلود صدا (MP3)</button>
+
+      <div id="videoOptions" class="section">
+        <h3>انتخاب کیفیت:</h3>
+        <select id="qualitySelect">
+          <option value="best">بهترین کیفیت</option>
+          <option value="137">1080p</option>
+          <option value="22">720p</option>
+          <option value="18">360p</option>
+        </select>
+        <h3>فرمت خروجی:</h3>
+        <select id="formatSelect">
+          <option value="mp4">MP4</option>
+          <option value="mkv">MKV</option>
+        </select>
+      </div>
+
+      <button onclick="generateCommand()">تولید دستور</button>
     </div>
 
-    <div id="playlistSection">
-      <h3>دانلود لیست پخش</h3>
-      <button onclick="downloadPlaylist()">دانلود لیست پخش</button>
+    <div id="commandSection" class="section" style="display: none;">
+      <h3>دستور آماده برای ترموکس:</h3>
+      <div id="commandOutput" class="command"></div>
+      <button class="action-btn" onclick="copyCommand()">کپی دستور</button>
+      <button class="action-btn" onclick="shareCommand()">شیر کردن</button>
     </div>
 
-    <div id="errorSection" style="display:none; color: red;">
-      <p>لطفاً لینک معتبر وارد کنید!</p>
-    </div>
-
-    <div id="infoSection" class="info">
-      <h4>اطلاعات ویدیو</h4>
-      <p id="videoInfo"></p>
+    <div class="info">
+      <h4>راهنما</h4>
+      <p>۱. لینک ویدیو یا پلی‌لیست رو وارد کنید.<br>
+         ۲. نوع دانلود و کیفیت رو انتخاب کنید.<br>
+         ۳. دستور تولیدشده رو کپی یا شیر کنید و در ترموکس اجرا کنید.<br>
+         ۴. بعد از دانلود، با دستور <code>ls</code> فایل‌ها رو ببینید.</p>
     </div>
   </div>
 
   <script>
-    async function fetchVideoData() {
+    function updateOptions() {
+      const downloadType = document.getElementById('downloadType').value;
+      const videoOptions = document.getElementById('videoOptions');
+      if (downloadType === 'video') {
+        videoOptions.style.display = 'block';
+      } else {
+        videoOptions.style.display = 'none';
+      }
+    }
+
+    function generateCommand() {
       const videoUrl = document.getElementById('videoUrl').value.trim();
-      if (!videoUrl) {
-        document.getElementById('errorSection').style.display = 'block';
-        return;
-      }
-      document.getElementById('errorSection').style.display = 'none';
-
-      const response = await fetch(`/api/formats?url=${videoUrl}`);
-      const data = await response.json();
-
-      if (data.formats) {
-        const select = document.getElementById('qualitySelect');
-        select.innerHTML = `<option value="">کیفیت انتخاب کنید</option>`; // Reset
-
-        data.formats.forEach(format => {
-          const option = document.createElement('option');
-          option.value = format.itag;
-          option.textContent = `${format.quality} - ${format.format}`;
-          select.appendChild(option);
-        });
-
-        // Display video info
-        const videoInfo = document.getElementById('videoInfo');
-        videoInfo.innerHTML = `عنوان: ${data.title}<br>تاریخ آپلود: ${data.upload_date}`;
-        
-        // Show quality section
-        document.getElementById('formatsSection').style.display = 'block';
-      }
-    }
-
-    function downloadVideo() {
+      const downloadType = document.getElementById('downloadType').value;
       const quality = document.getElementById('qualitySelect').value;
-      const videoUrl = document.getElementById('videoUrl').value;
-      if (!quality) {
-        alert("لطفاً کیفیت را انتخاب کنید");
+      const format = document.getElementById('formatSelect').value;
+
+      if (!videoUrl) {
+        alert('لطفاً لینک ویدیو یا پلی‌لیست را وارد کنید!');
         return;
       }
-      const downloadLink = `/download?url=${videoUrl}&quality=${quality}`;
-      window.location.href = downloadLink;
+
+      const basePath = 'cd /storage/emulated/0/Termux';
+      let command = '';
+
+      if (downloadType === 'video') {
+        command = `yt-dlp "${videoUrl}" --format ${quality} --merge-output-format ${format}`;
+      } else if (downloadType === 'audio') {
+        command = `yt-dlp "${videoUrl}" --extract-audio --audio-format mp3`;
+      } else if (downloadType === 'playlist') {
+        command = `yt-dlp "${videoUrl}" --yes-playlist --format best`;
+      }
+
+      const fullCommand = `${basePath}\n${command}\nls`;
+      document.getElementById('commandOutput').innerText = fullCommand;
+      document.getElementById('commandSection').style.display = 'block';
     }
 
-    function downloadAudio() {
-      const videoUrl = document.getElementById('videoUrl').value;
-      const downloadLink = `/download?url=${videoUrl}&audio=true`;
-      window.location.href = downloadLink;
+    function copyCommand() {
+      const command = document.getElementById('commandOutput').innerText;
+      navigator.clipboard.writeText(command);
+      const copyBtn = document.querySelector('button[onclick="copyCommand()"]');
+      copyBtn.classList.add('copied');
+      setTimeout(() => copyBtn.classList.remove('copied'), 1000);
     }
 
-    function downloadPlaylist() {
-      const videoUrl = document.getElementById('videoUrl').value;
-      const downloadLink = `/download?url=${videoUrl}&playlist=true`;
-      window.location.href = downloadLink;
+    function shareCommand() {
+      const command = document.getElementById('commandOutput').innerText;
+      if (navigator.share) {
+        navigator.share({
+          text: command,
+          title: 'دستور دانلود یوتیوب'
+        });
+      } else {
+        alert('مرورگر شما از قابلیت شیر پشتیبانی نمی‌کند. لطفاً دستور را کپی کنید.');
+      }
+      const shareBtn = document.querySelector('button[onclick="shareCommand()"]');
+      shareBtn.classList.add('copied');
+      setTimeout(() => shareBtn.classList.remove('copied'), 1000);
     }
   </script>
 </body>

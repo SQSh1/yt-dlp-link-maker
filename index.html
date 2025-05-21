@@ -50,16 +50,6 @@
     button:hover {
       background-color: #00B7EB;
     }
-    .action-btn {
-      background-color: #555;
-      margin: 5px;
-    }
-    .action-btn:hover {
-      background-color: #777;
-    }
-    .action-btn.copied {
-      background-color: #1E90FF;
-    }
     .container {
       text-align: center;
       width: 100%;
@@ -84,6 +74,38 @@
       border-radius: 5px;
       margin-top: 10px;
       word-wrap: break-word;
+    }
+    .action-section {
+      margin: 10px 0;
+      padding: 10px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .copy-section {
+      background-color: #28A745;
+    }
+    .copy-section.copied {
+      background-color: #218838;
+    }
+    .share-section {
+      background-color: #FF9500;
+    }
+    .share-section.shared {
+      background-color: #CC7700;
+    }
+    .action-btn {
+      background: none;
+      border: none;
+      color: #FFFFFF;
+      font-size: 16px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+    }
+    .action-btn span {
+      margin-left: 5px;
     }
   </style>
 </head>
@@ -122,16 +144,27 @@
     <div id="commandSection" class="section" style="display: none;">
       <h3>دستور آماده برای ترموکس:</h3>
       <div id="commandOutput" class="command"></div>
-      <button class="action-btn" onclick="copyCommand()">کپی دستور</button>
-      <button class="action-btn" onclick="shareCommand()">شیر کردن</button>
+      <div class="action-section copy-section">
+        <span>دستور را کپی کنید و در ترموکس اجرا کنید</span>
+        <button class="action-btn" onclick="copyCommand()">
+          <span>📋 کپی</span>
+        </button>
+      </div>
+      <div class="action-section share-section">
+        <span>دستور را شیر کنید (در صورت مشکل، کپی کنید)</span>
+        <button class="action-btn" onclick="shareCommand()">
+          <span>↗️ شیر</span>
+        </button>
+      </div>
     </div>
 
     <div class="info">
       <h4>راهنما</h4>
       <p>۱. لینک ویدیو یا پلی‌لیست رو وارد کنید.<br>
          ۲. نوع دانلود و کیفیت رو انتخاب کنید.<br>
-         ۳. دستور تولیدشده رو کپی یا شیر کنید و در ترموکس اجرا کنید.<br>
-         ۴. بعد از دانلود، با دستور <code>ls</code> فایل‌ها رو ببینید.</p>
+         ۳. دستور تولیدشده رو کپی کنید و در ترموکس پیست کنید.<br>
+         ۴. پیشنهاد: از دکمه کپی استفاده کنید، چون شیر کردن ممکن است به‌درستی کار نکند.<br>
+         ۵. بعد از دانلود، با دستور <code>ls</code> فایل‌ها رو ببینید.</p>
     </div>
   </div>
 
@@ -176,9 +209,9 @@
     function copyCommand() {
       const command = document.getElementById('commandOutput').innerText;
       navigator.clipboard.writeText(command);
-      const copyBtn = document.querySelector('button[onclick="copyCommand()"]');
-      copyBtn.classList.add('copied');
-      setTimeout(() => copyBtn.classList.remove('copied'), 1000);
+      const copySection = document.querySelector('.copy-section');
+      copySection.classList.add('copied');
+      setTimeout(() => copySection.classList.remove('copied'), 1000);
     }
 
     function shareCommand() {
@@ -191,9 +224,9 @@
       } else {
         alert('مرورگر شما از قابلیت شیر پشتیبانی نمی‌کند. لطفاً دستور را کپی کنید.');
       }
-      const shareBtn = document.querySelector('button[onclick="shareCommand()"]');
-      shareBtn.classList.add('copied');
-      setTimeout(() => shareBtn.classList.remove('copied'), 1000);
+      const shareSection = document.querySelector('.share-section');
+      shareSection.classList.add('shared');
+      setTimeout(() => shareSection.classList.remove('shared'), 1000);
     }
   </script>
 </body>

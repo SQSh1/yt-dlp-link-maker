@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ابزار دانلود از یوتیوب</title>
+  <title>ابزار دانلود از پلتفرم‌های مختلف</title>
   <style>
     body {
       font-family: 'Vazirmatn', Arial, sans-serif;
@@ -91,7 +91,6 @@
     }
     .share-section {
       background-color: #FF9500;
-      position: relative;
     }
     .share-section.shared {
       background-color: #CC7700;
@@ -108,54 +107,38 @@
     .action-btn span {
       margin-left: 5px;
     }
-    .share-options {
-      display: none;
-      position: absolute;
-      top: 100%;
-      left: 0;
-      background-color: #333;
-      border-radius: 8px;
-      padding: 10px;
-      z-index: 1;
-    }
-    .share-options button {
-      display: block;
-      width: 100%;
-      text-align: right;
-      background: none;
-      border: none;
-      color: #FFFFFF;
-      padding: 8px;
-      cursor: pointer;
-    }
-    .share-options button:hover {
-      background-color: #444;
-    }
   </style>
 </head>
 <body>
-  <h1>ابزار دانلود از یوتیوب</h1>
+  <h1>ابزار دانلود از پلتفرم‌های مختلف</h1>
 
   <div class="container">
-    <input type="text" id="videoUrl" placeholder="لینک ویدیو یا پلی‌لیست یوتیوب" />
+    <input type="text" id="videoUrl" placeholder="لینک ویدیو یا صوت از هر پلتفرم" />
 
     <div class="section">
+      <h3>انتخاب پلتفرم:</h3>
+      <select id="platformSelect" onchange="updateOptions()">
+        <option value="youtube">یوتیوب</option>
+        <option value="instagram">اینستاگرام</option>
+        <option value="tiktok">تیک‌تاک</option>
+        <option value="twitter">توئیتر</option>
+      </select>
+
       <h3>انتخاب نوع دانلود:</h3>
       <select id="downloadType" onchange="updateOptions()">
         <option value="video">دانلود ویدیو</option>
         <option value="audio">دانلود صدا (MP3)</option>
-        <option value="playlist">دانلود پلی‌لیست</option>
       </select>
 
       <div id="videoOptions" class="section">
-        <h3>انتخاب کیفیت:</h3>
+        <h3>انتخاب کیفیت (بسته به پلتفرم):</h3>
         <select id="qualitySelect">
           <option value="best">بهترین کیفیت</option>
-          <option value="137">1080p</option>
-          <option value="22">720p</option>
-          <option value="18">360p</option>
+          <option value="1080">1080p</option>
+          <option value="720">720p</option>
+          <option value="360">360p</option>
         </select>
-        <h3>فرمت خروجی:</h3>
+        <h3>فرمت خروجی (برای ویدیو):</h3>
         <select id="formatSelect">
           <option value="mp4">MP4</option>
           <option value="mkv">MKV</option>
@@ -174,31 +157,28 @@
           <span>📋 کپی</span>
         </button>
       </div>
-      <div class="action-section share-section" id="shareSection">
-        <span>دستور را به تلگرام، واتساپ یا نوت شیر کنید تا بعداً اجرا کنید</span>
-        <button class="action-btn" onclick="toggleShareOptions()">
+      <div class="action-section share-section">
+        <span>دستور را به تلگرام، واتساپ یا نوت شیر کنید</span>
+        <button class="action-btn" onclick="shareCommand()">
           <span>↗️ شیر</span>
         </button>
-        <div class="share-options" id="shareOptions">
-          <button onclick="shareCommand('default')">شیر به هر اپ (تلگرام، واتساپ، نوت و...)</button>
-          <button onclick="shareCommand('termux')">شیر مستقیم به ترموکس (پیشرفته)</button>
-        </div>
       </div>
     </div>
 
     <div class="info">
       <h4>راهنما</h4>
-      <p>۱. لینک ویدیو یا پلی‌لیست رو وارد کنید.<br>
-         ۲. نوع دانلود و کیفیت رو انتخاب کنید.<br>
-         ۳. دستور تولیدشده رو کپی کنید و در ترموکس پیست کنید.<br>
-         ۴. برای ذخیره موقت، از دکمه شیر استفاده کنید و دستور را در تلگرام، واتساپ یا نوت ذخیره کنید.<br>
-         ۵. پیشنهاد: از دکمه کپی برای اجرای سریع‌تر استفاده کنید.<br>
+      <p>۱. لینک ویدیو یا صوت مورد علاقه‌تون رو از هر پلتفرم (مثل یوتیوب، اینستاگرام، تیک‌تاک و...) کپی کنید.<br>
+         ۲. پلتفرم و نوع دانلود (ویدیو یا صوت) رو انتخاب کنید.<br>
+         ۳. کیفیت و فرمت رو تنظیم کنید (بسته به پشتیبانی پلتفرم).<br>
+         ۴. دستور تولیدشده رو کپی کنید و در ترموکس پیست کنید.<br>
+         ۵. برای ذخیره موقت، از دکمه شیر استفاده کنید.<br>
          ۶. بعد از دانلود، با دستور <code>ls</code> فایل‌ها رو ببینید.</p>
     </div>
   </div>
 
   <script>
     function updateOptions() {
+      const platform = document.getElementById('platformSelect').value;
       const downloadType = document.getElementById('downloadType').value;
       const videoOptions = document.getElementById('videoOptions');
       if (downloadType === 'video') {
@@ -206,28 +186,52 @@
       } else {
         videoOptions.style.display = 'none';
       }
+      // تنظیم گزینه‌های کیفیت بر اساس پلتفرم (اختیاری)
+      if (platform === 'tiktok') {
+        document.getElementById('qualitySelect').value = 'best';
+        document.getElementById('formatSelect').value = 'mp4';
+      }
     }
 
     function generateCommand() {
       const videoUrl = document.getElementById('videoUrl').value.trim();
+      const platform = document.getElementById('platformSelect').value;
       const downloadType = document.getElementById('downloadType').value;
       const quality = document.getElementById('qualitySelect').value;
       const format = document.getElementById('formatSelect').value;
 
       if (!videoUrl) {
-        alert('لطفاً لینک ویدیو یا پلی‌لیست را وارد کنید!');
+        alert('لطفاً لینک ویدیو یا صوت را وارد کنید!');
         return;
       }
 
       const basePath = 'cd /storage/emulated/0/Termux';
       let command = '';
 
-      if (downloadType === 'video') {
-        command = `yt-dlp "${videoUrl}" --format ${quality} --merge-output-format ${format}`;
-      } else if (downloadType === 'audio') {
-        command = `yt-dlp "${videoUrl}" --extract-audio --audio-format mp3`;
-      } else if (downloadType === 'playlist') {
-        command = `yt-dlp "${videoUrl}" --yes-playlist --format best`;
+      if (platform === 'youtube') {
+        if (downloadType === 'video') {
+          command = `yt-dlp "${videoUrl}" --format ${quality} --merge-output-format ${format}`;
+        } else {
+          command = `yt-dlp "${videoUrl}" --extract-audio --audio-format mp3`;
+        }
+      } else if (platform === 'instagram') {
+        if (downloadType === 'video') {
+          command = `yt-dlp "${videoUrl}" --format bestvideo+bestaudio/best --merge-output-format mp4`;
+        } else {
+          command = `yt-dlp "${videoUrl}" --extract-audio --audio-format mp3`;
+        }
+      } else if (platform === 'tiktok') {
+        if (downloadType === 'video') {
+          command = `yt-dlp "${videoUrl}" --format bestvideo+bestaudio/best --recode-video mp4 --postprocessor-args "-y -no-keep-video"`;
+        } else {
+          command = `yt-dlp "${videoUrl}" --extract-audio --audio-format mp3`;
+        }
+      } else if (platform === 'twitter') {
+        if (downloadType === 'video') {
+          command = `yt-dlp "${videoUrl}" --format bestvideo+bestaudio/best --merge-output-format mp4`;
+        } else {
+          command = `yt-dlp "${videoUrl}" --extract-audio --audio-format mp3`;
+        }
       }
 
       const fullCommand = `${basePath}\n${command}\nls`;
@@ -243,43 +247,20 @@
       setTimeout(() => copySection.classList.remove('copied'), 1000);
     }
 
-    function toggleShareOptions() {
-      const shareOptions = document.getElementById('shareOptions');
-      shareOptions.style.display = shareOptions.style.display === 'block' ? 'none' : 'block';
-    }
-
-    function shareCommand(type) {
+    function shareCommand() {
       const command = document.getElementById('commandOutput').innerText;
-      const shareSection = document.querySelector('.share-section');
-      const shareOptions = document.getElementById('shareOptions');
-
-      if (type === 'termux') {
-        const termuxUrl = `termux://run?command=${encodeURIComponent(command)}`;
-        window.location.href = termuxUrl;
+      if (navigator.share) {
+        navigator.share({
+          text: command,
+          title: 'دستور دانلود'
+        });
       } else {
-        if (navigator.share) {
-          navigator.share({
-            text: command,
-            title: 'دستور دانلود یوتیوب'
-          });
-        } else {
-          alert('مرورگر شما از قابلیت شیر پشتیبانی نمی‌کند. لطفاً دستور را کپی کنید.');
-        }
+        alert('مرورگر شما از قابلیت شیر پشتیبانی نمی‌کند. لطفاً دستور را کپی کنید.');
       }
-
+      const shareSection = document.querySelector('.share-section');
       shareSection.classList.add('shared');
       setTimeout(() => shareSection.classList.remove('shared'), 1000);
-      shareOptions.style.display = 'none';
     }
-
-    // بستن منوی شیر با کلیک بیرون
-    document.addEventListener('click', function(event) {
-      const shareSection = document.getElementById('shareSection');
-      const shareOptions = document.getElementById('shareOptions');
-      if (!shareSection.contains(event.target)) {
-        shareOptions.style.display = 'none';
-      }
-    });
   </script>
 </body>
 </html>

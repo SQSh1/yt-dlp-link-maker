@@ -91,6 +91,7 @@
     }
     .share-section {
       background-color: #FF9500;
+      position: relative;
     }
     .share-section.shared {
       background-color: #CC7700;
@@ -106,6 +107,29 @@
     }
     .action-btn span {
       margin-left: 5px;
+    }
+    .share-options {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      background-color: #333;
+      border-radius: 8px;
+      padding: 10px;
+      z-index: 1;
+    }
+    .share-options button {
+      display: block;
+      width: 100%;
+      text-align: right;
+      background: none;
+      border: none;
+      color: #FFFFFF;
+      padding: 8px;
+      cursor: pointer;
+    }
+    .share-options button:hover {
+      background-color: #444;
     }
   </style>
 </head>
@@ -150,11 +174,15 @@
           <span>📋 کپی</span>
         </button>
       </div>
-      <div class="action-section share-section">
-        <span>دستور را شیر کنید (در صورت مشکل، کپی کنید)</span>
-        <button class="action-btn" onclick="shareCommand()">
+      <div class="action-section share-section" id="shareSection">
+        <span>دستور را به تلگرام، واتساپ یا نوت شیر کنید تا بعداً اجرا کنید</span>
+        <button class="action-btn" onclick="toggleShareOptions()">
           <span>↗️ شیر</span>
         </button>
+        <div class="share-options" id="shareOptions">
+          <button onclick="shareCommand('default')">شیر به هر اپ (تلگرام، واتساپ، نوت و...)</button>
+          <button onclick="shareCommand('termux')">شیر مستقیم به ترموکس (پیشرفته)</button>
+        </div>
       </div>
     </div>
 
@@ -163,8 +191,9 @@
       <p>۱. لینک ویدیو یا پلی‌لیست رو وارد کنید.<br>
          ۲. نوع دانلود و کیفیت رو انتخاب کنید.<br>
          ۳. دستور تولیدشده رو کپی کنید و در ترموکس پیست کنید.<br>
-         ۴. پیشنهاد: از دکمه کپی استفاده کنید، چون شیر کردن ممکن است به‌درستی کار نکند.<br>
-         ۵. بعد از دانلود، با دستور <code>ls</code> فایل‌ها رو ببینید.</p>
+         ۴. برای ذخیره موقت، از دکمه شیر استفاده کنید و دستور را در تلگرام، واتساپ یا نوت ذخیره کنید.<br>
+         ۵. پیشنهاد: از دکمه کپی برای اجرای سریع‌تر استفاده کنید.<br>
+         ۶. بعد از دانلود، با دستور <code>ls</code> فایل‌ها رو ببینید.</p>
     </div>
   </div>
 
@@ -214,20 +243,43 @@
       setTimeout(() => copySection.classList.remove('copied'), 1000);
     }
 
-    function shareCommand() {
+    function toggleShareOptions() {
+      const shareOptions = document.getElementById('shareOptions');
+      shareOptions.style.display = shareOptions.style.display === 'block' ? 'none' : 'block';
+    }
+
+    function shareCommand(type) {
       const command = document.getElementById('commandOutput').innerText;
-      if (navigator.share) {
-        navigator.share({
-          text: command,
-          title: 'دستور دانلود یوتیوب'
-        });
-      } else {
-        alert('مرورگر شما از قابلیت شیر پشتیبانی نمی‌کند. لطفاً دستور را کپی کنید.');
-      }
       const shareSection = document.querySelector('.share-section');
+      const shareOptions = document.getElementById('shareOptions');
+
+      if (type === 'termux') {
+        const termuxUrl = `termux://run?command=${encodeURIComponent(command)}`;
+        window.location.href = termuxUrl;
+      } else {
+        if (navigator.share) {
+          navigator.share({
+            text: command,
+            title: 'دستور دانلود یوتیوب'
+          });
+        } else {
+          alert('مرورگر شما از قابلیت شیر پشتیبانی نمی‌کند. لطفاً دستور را کپی کنید.');
+        }
+      }
+
       shareSection.classList.add('shared');
       setTimeout(() => shareSection.classList.remove('shared'), 1000);
+      shareOptions.style.display = 'none';
     }
+
+    // بستن منوی شیر با کلیک بیرون
+    document.addEventListener('click', function(event) {
+      const shareSection = document.getElementById('shareSection');
+      const shareOptions = document.getElementById('shareOptions');
+      if (!shareSection.contains(event.target)) {
+        shareOptions.style.display = 'none';
+      }
+    });
   </script>
 </body>
 </html>

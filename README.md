@@ -1,3 +1,10 @@
+readme_content = """# 📜 License
+
+This project is licensed under the terms of the MIT License.  
+For details, see the [LICENSE](LICENSE) file in the repository root.
+
+---
+
 # 🎬 yt-dlp Link Generator for Termux
 
 **yt-dlp Link Generator** is a simple and user-friendly tool that helps you automatically generate `yt-dlp` commands to download videos or audio from YouTube within the Termux environment. Designed with an easy-to-use interface, this tool enhances the downloading experience for Android users.

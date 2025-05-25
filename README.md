@@ -1,4 +1,4 @@
-readme_content = """# 📜 License
+# 📜 License
 
 This project is licensed under the terms of the MIT License.  
 For details, see the [LICENSE](LICENSE) file in the repository root.

@@ -1,4 +1,5 @@
-
+## Using the downloader tool
+   .[Click to use the link generator].(https://sqsh1.github.io/yt-dlp-link-maker).
 # 🎬 yt-dlp Link Generator for Termux
 
 **yt-dlp Link Generator** is a simple and user-friendly tool that helps you automatically generate `yt-dlp` commands to download videos or audio from YouTube within the Termux environment. Designed with an easy-to-use interface, this tool enhances the downloading experience for Android users.

@@ -35,9 +35,11 @@ Before using the tool, ensure the following are installed in Termux:
 3. **Install Prerequisites**  
    Run the following commands in Termux:  
    ```
-   pkg update && pkg upgrade
-   pkg install yt-dlp
    termux-setup-storage
+   pkg update && pkg upgrade
+   pkg install python -y
+   pip install yt-dlp
+   
    ```
 
 4. **Get the Project**  

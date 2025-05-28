@@ -30,9 +30,10 @@ Before using the tool, ensure the following are installed in Termux:
 ## 📥 Installation
 
 1. **Install Termux**  
-   Download and install Termux on your Android device from [Google Play](https://play.google.com/store/apps/details?id=com.termux) or [F-Droid](https://f-droid.org/packages/com.termux/).
+   Download and install Termux on your Android device
+   from [Google Play](https://play.google.com/store/apps/details?id=com.termux) or [F-Droid](https://f-droid.org/packages/com.termux/).
 
-2. **Install Prerequisites**  
+3. **Install Prerequisites**  
    Run the following commands in Termux:  
    ```
    pkg update && pkg upgrade
@@ -40,7 +41,7 @@ Before using the tool, ensure the following are installed in Termux:
    termux-setup-storage
    ```
 
-3. **Get the Project**  
+4. **Get the Project**  
    Clone this repository or download the project files:  
    ```
    git clone https://github.com/your-username/your-repo.git

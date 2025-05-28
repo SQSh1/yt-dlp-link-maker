@@ -30,8 +30,7 @@ Before using the tool, ensure the following are installed in Termux:
 ## 📥 Installation
 
 1. **Install Termux**  
-   Download and install Termux on your Android device
-   from [Google Play](https://play.google.com/store/apps/details?id=com.termux) or [F-Droid](https://f-droid.org/packages/com.termux/).
+   Download and install Termux on your Android device from [Google Play](https://play.google.com/store/apps/details?id=com.termux) or [F-Droid](https://f-droid.org/packages/com.termux/).
 
 3. **Install Prerequisites**  
    Run the following commands in Termux:  

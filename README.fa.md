@@ -17,9 +17,10 @@
 1. **پیش‌نیازها و نصب**  
    دستورات زیر را در ترموکس اجرا کنید:  
    ```
-   pkg update && pkg upgrade
-   pkg install yt-dlp
    termux-setup-storage
+   pkg update && pkg upgrade
+   pkg install python
+   pip install --upgrade yt-dlp
 
 
 قبل از استفاده، مطمئن شوید ابزارهای زیر در ترموکس نصب شده‌اند:

@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="fa" dir="rtl">
+<html lang="en" dir="ltr">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.8, maximum-scale=1.0, user-scalable=no">
-  <title>ابزار دانلود از پلتفرم‌های مختلف</title>
+  <title>Download Tool for Various Platforms</title>
   <style>
     body {
-      font-family: 'Vazirmatn', Arial, sans-serif;
+      font-family: Arial, sans-serif;
       margin: 0;
       padding: 20px;
       background-color: #1A1A1A;
@@ -15,7 +15,7 @@
       flex-direction: column;
       align-items: center;
       min-height: 100vh;
-      box-sizing: border-box; /* جلوگیری از سرریز شدن محتوا */
+      box-sizing: border-box; /* Prevent content overflow */
     }
     h1 {
       font-size: 24px;
@@ -53,10 +53,10 @@
     }
     .container {
       text-align: center;
-      width: 90%; /* عرض نسبی برای حالت موبایلی */
-      max-width: 800px; /* حداکثر عرض برای دسکتاپ */
-      min-width: 600px; /* حداقل عرض برای جلوگیری از کوچک شدن بیش از حد */
-      margin: 0 auto; /* وسط‌چین کردن */
+      width: 90%; /* Relative width for mobile */
+      max-width: 800px; /* Max width for desktop */
+      min-width: 600px; /* Min width to avoid excessive shrinking */
+      margin: 0 auto; /* Center alignment */
     }
     .section {
       margin-top: 20px;
@@ -115,7 +115,7 @@
       margin-bottom: 10px;
       text-align: center;
       font-size: 12px;
-      color: #A3DFFA; /* آبی کم حال */
+      color: #A3DFFA; /* Light blue shade */
     }
     .footer-box {
       display: inline-block;
@@ -126,80 +126,80 @@
     }
     @media (max-width: 767px) {
       .container {
-        width: 100%; /* عرض کامل برای موبایل */
-        min-width: 0; /* حذف حداقل عرض برای موبایل */
-        max-width: none; /* حذف حداکثر عرض برای موبایل */
+        width: 100%; /* Full width for mobile */
+        min-width: 0; /* Remove min width for mobile */
+        max-width: none; /* Remove max width for mobile */
       }
       input, select, button {
-        max-width: 100%; /* عرض کامل برای المان‌ها در موبایل */
+        max-width: 100%; /* Full width for elements on mobile */
       }
     }
   </style>
 </head>
 <body>
-  <h1>ابزار دانلود از پلتفرم‌های مختلف</h1>
+  <h1>Download Tool for Various Platforms</h1>
 
   <div class="container">
-    <input type="text" id="videoUrl" placeholder="لینک ویدیو یا صوت از هر پلتفرم" />
+    <input type="text" id="videoUrl" placeholder="Enter video or audio link from any platform" />
 
     <div class="section">
-      <h3>انتخاب پلتفرم:</h3>
+      <h3>Select Platform:</h3>
       <select id="platformSelect" onchange="updateOptions()">
-        <option value="youtube">یوتیوب</option>
-        <option value="instagram">اینستاگرام</option>
-        <option value="tiktok">تیک‌تاک</option>
-        <option value="twitter">توئیتر</option>
+        <option value="youtube">YouTube</option>
+        <option value="instagram">Instagram</option>
+        <option value="tiktok">TikTok</option>
+        <option value="twitter">Twitter</option>
       </select>
 
-      <h3>انتخاب نوع دانلود:</h3>
+      <h3>Select Download Type:</h3>
       <select id="downloadType" onchange="updateOptions()">
-        <option value="video">دانلود ویدیو</option>
-        <option value="audio">دانلود صدا (MP3)</option>
+        <option value="video">Download Video</option>
+        <option value="audio">Download Audio (MP3)</option>
       </select>
 
       <div id="videoOptions" class="section">
-        <h3>انتخاب کیفیت (بسته به پلتفرم):</h3>
+        <h3>Select Quality (Depending on Platform):</h3>
         <select id="qualitySelect">
-          <option value="best">بهترین کیفیت</option>
+          <option value="best">Best Quality</option>
           <option value="1080">1080p</option>
           <option value="720">720p</option>
           <option value="360">360p</option>
         </select>
-        <h3>فرمت خروجی (برای ویدیو):</h3>
+        <h3>Output Format (For Video):</h3>
         <select id="formatSelect">
           <option value="mp4">MP4</option>
           <option value="mkv">MKV</option>
         </select>
       </div>
 
-      <button onclick="generateCommand()">تولید دستور</button>
+      <button onclick="generateCommand()">Generate Command</button>
     </div>
 
     <div id="commandSection" class="section" style="display: none;">
-      <h3>دستور آماده برای ترموکس:</h3>
+      <h3>Ready Command for Termux:</h3>
       <div id="commandOutput" class="command"></div>
       <div class="action-section copy-section">
-        <span>دستور را کپی کنید و در ترموکس اجرا کنید</span>
+        <span>Copy the command and run it in Termux</span>
         <button class="action-btn" onclick="copyCommand()">
-          <span>📋 کپی</span>
+          <span>📋 Copy</span>
         </button>
       </div>
       <div class="action-section share-section">
-        <span>دستور را به تلگرام، واتساپ یا نوت شیر کنید</span>
+        <span>Share the command to Telegram, WhatsApp, or Notes</span>
         <button class="action-btn" onclick="shareCommand()">
-          <span>↗️ شیر</span>
+          <span>↗️ Share</span>
         </button>
       </div>
     </div>
 
     <div class="info">
-      <h4>راهنما</h4>
-      <p>۱. لینک ویدیو یا صوت مورد علاقه‌تون رو از هر پلتفرم (مثل یوتیوب، اینستاگرام، تیک‌تاک و...) کپی کنید.<br>
-         ۲. پلتفرم و نوع دانلود (ویدیو یا صوت) رو انتخاب کنید.<br>
-         ۳. کیفیت و فرمت رو تنظیم کنید (بسته به پشتیبانی پلتفرم).<br>
-         ۴. دستور تولیدشده رو کپی کنید و در ترموکس پیست کنید.<br>
-         ۵. برای ذخیره موقت، از دکمه شیر استفاده کنید.<br>
-         ۶. بعد از دانلود، با دستور <code>ls</code> فایل‌ها رو ببینید.</p>
+      <h4>Guide</h4>
+      <p>1. Copy the video or audio link from any platform (e.g., YouTube, Instagram, TikTok, etc.).<br>
+         2. Select the platform and download type (video or audio).<br>
+         3. Adjust quality and format (depending on platform support).<br>
+         4. Copy the generated command and paste it in Termux.<br>
+         5. Use the share button for temporary storage.<br>
+         6. After download, use the <code>ls</code> command to view files.</p>
     </div>
   </div>
 
@@ -233,7 +233,7 @@
       const format = document.getElementById('formatSelect').value;
 
       if (!videoUrl) {
-        alert('لطفاً لینک ویدیو یا صوت را وارد کنید!');
+        alert('Please enter a video or audio link!');
         return;
       }
 
@@ -284,10 +284,10 @@
       if (navigator.share) {
         navigator.share({
           text: command,
-          title: 'دستور دانلود'
+          title: 'Download Command'
         });
       } else {
-        alert('مرورگر شما از قابلیت شیر پشتیبانی نمی‌کند. لطفاً دستور را کپی کنید.');
+        alert('Your browser does not support the share feature. Please copy the command.');
       }
       const shareSection = document.querySelector('.share-section');
       shareSection.classList.add('shared');

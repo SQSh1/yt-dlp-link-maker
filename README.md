@@ -35,8 +35,8 @@ Before using the tool, ensure the following are installed in Termux:
    ```
    termux-setup-storage
    pkg update && pkg upgrade
-   pkg install python -y
-   pip install yt-dlp
+   pkg install python
+   pip install --upgrade yt-dlp
    
    ```
 

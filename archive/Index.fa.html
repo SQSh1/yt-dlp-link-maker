@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.8, maximum-scale=1.0, user-scalable=no">
+  <title>ابزار دانلود از پلتفرم‌های مختلف</title>
+  <style>
+    body {
+      font-family: 'Vazirmatn', Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background-color: #1A1A1A;
+      color: #FFFFFF;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      box-sizing: border-box; /* جلوگیری از سرریز شدن محتوا */
+    }
+    h1 {
+      font-size: 24px;
+      margin-bottom: 20px;
+      color: #00B7EB;
+    }
+    input, select, button {
+      padding: 12px;
+      margin: 10px 0;
+      font-size: 16px;
+      border-radius: 8px;
+      width: 100%;
+      max-width: 400px;
+      box-sizing: border-box;
+    }
+    input {
+      background-color: #2F2F2F;
+      color: #FFFFFF;
+      border: 1px solid #444;
+    }
+    select {
+      background-color: #2F2F2F;
+      color: #FFFFFF;
+      border: 1px solid #444;
+    }
+    button {
+      background-color: #1E90FF;
+      color: #FFFFFF;
+      border: none;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    button:hover {
+      background-color: #00B7EB;
+    }
+    .container {
+      text-align: center;
+      width: 90%; /* عرض نسبی برای حالت موبایلی */
+      max-width: 800px; /* حداکثر عرض برای دسکتاپ */
+      min-width: 600px; /* حداقل عرض برای جلوگیری از کوچک شدن بیش از حد */
+      margin: 0 auto; /* وسط‌چین کردن */
+    }
+    .section {
+      margin-top: 20px;
+      background-color: #252525;
+      padding: 15px;
+      border-radius: 8px;
+    }
+    .info {
+      background-color: #333;
+      padding: 10px;
+      margin-top: 20px;
+      border-radius: 8px;
+      font-size: 14px;
+    }
+    .command {
+      background-color: #2F2F2F;
+      padding: 10px;
+      border-radius: 5px;
+      margin-top: 10px;
+      word-wrap: break-word;
+    }
+    .action-section {
+      margin: 10px 0;
+      padding: 10px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .copy-section {
+      background-color: #28A745;
+    }
+    .copy-section.copied {
+      background-color: #218838;
+    }
+    .share-section {
+      background-color: #FF9500;
+    }
+    .share-section.shared {
+      background-color: #CC7700;
+    }
+    .action-btn {
+      background: none;
+      border: none;
+      color: #FFFFFF;
+      font-size: 16px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+    }
+    .action-btn span {
+      margin-left: 5px;
+    }
+    footer {
+      margin-top: 20px;
+      margin-bottom: 10px;
+      text-align: center;
+      font-size: 12px;
+      color: #A3DFFA; /* آبی کم حال */
+    }
+    .footer-box {
+      display: inline-block;
+      background-color: #2F2F2F;
+      padding: 5px 10px;
+      border-radius: 5px;
+      border: 1px solid #444;
+    }
+    @media (max-width: 767px) {
+      .container {
+        width: 100%; /* عرض کامل برای موبایل */
+        min-width: 0; /* حذف حداقل عرض برای موبایل */
+        max-width: none; /* حذف حداکثر عرض برای موبایل */
+      }
+      input, select, button {
+        max-width: 100%; /* عرض کامل برای المان‌ها در موبایل */
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>ابزار دانلود از پلتفرم‌های مختلف</h1>
+
+  <div class="container">
+    <input type="text" id="videoUrl" placeholder="لینک ویدیو یا صوت از هر پلتفرم" />
+
+    <div class="section">
+      <h3>انتخاب پلتفرم:</h3>
+      <select id="platformSelect" onchange="updateOptions()">
+        <option value="youtube">یوتیوب</option>
+        <option value="instagram">اینستاگرام</option>
+        <option value="tiktok">تیک‌تاک</option>
+        <option value="twitter">توئیتر</option>
+      </select>
+
+      <h3>انتخاب نوع دانلود:</h3>
+      <select id="downloadType" onchange="updateOptions()">
+        <option value="video">دانلود ویدیو</option>
+        <option value="audio">دانلود صدا (MP3)</option>
+      </select>
+
+      <div id="videoOptions" class="section">
+        <h3>انتخاب کیفیت (بسته به پلتفرم):</h3>
+        <select id="qualitySelect">
+          <option value="best">بهترین کیفیت</option>
+          <option value="1080">1080p</option>
+          <option value="720">720p</option>
+          <option value="360">360p</option>
+        </select>
+        <h3>فرمت خروجی (برای ویدیو):</h3>
+        <select id="formatSelect">
+          <option value="mp4">MP4</option>
+          <option value="mkv">MKV</option>
+        </select>
+      </div>
+
+      <button onclick="generateCommand()">تولید دستور</button>
+    </div>
+
+    <div id="commandSection" class="section" style="display: none;">
+      <h3>دستور آماده برای ترموکس:</h3>
+      <div id="commandOutput" class="command"></div>
+      <div class="action-section copy-section">
+        <span>دستور را کپی کنید و در ترموکس اجرا کنید</span>
+        <button class="action-btn" onclick="copyCommand()">
+          <span>📋 کپی</span>
+        </button>
+      </div>
+      <div class="action-section share-section">
+        <span>دستور را به تلگرام، واتساپ یا نوت شیر کنید</span>
+        <button class="action-btn" onclick="shareCommand()">
+          <span>↗️ شیر</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="info">
+      <h4>راهنما</h4>
+      <p>۱. لینک ویدیو یا صوت مورد علاقه‌تون رو از هر پلتفرم (مثل یوتیوب، اینستاگرام، تیک‌تاک و...) کپی کنید.<br>
+         ۲. پلتفرم و نوع دانلود (ویدیو یا صوت) رو انتخاب کنید.<br>
+         ۳. کیفیت و فرمت رو تنظیم کنید (بسته به پشتیبانی پلتفرم).<br>
+         ۴. دستور تولیدشده رو کپی کنید و در ترموکس پیست کنید.<br>
+         ۵. برای ذخیره موقت، از دکمه شیر استفاده کنید.<br>
+         ۶. بعد از دانلود، با دستور <code>ls</code> فایل‌ها رو ببینید.</p>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-box">
+      Made by SQ
+    </div>
+  </footer>
+
+  <script>
+    function updateOptions() {
+      const platform = document.getElementById('platformSelect').value;
+      const downloadType = document.getElementById('downloadType').value;
+      const videoOptions = document.getElementById('videoOptions');
+      if (downloadType === 'video') {
+        videoOptions.style.display = 'block';
+      } else {
+        videoOptions.style.display = 'none';
+      }
+      if (platform === 'tiktok') {
+        document.getElementById('qualitySelect').value = 'best';
+        document.getElementById('formatSelect').value = 'mp4';
+      }
+    }
+
+    function generateCommand() {
+      const videoUrl = document.getElementById('videoUrl').value.trim();
+      const platform = document.getElementById('platformSelect').value;
+      const downloadType = document.getElementById('downloadType').value;
+      const quality = document.getElementById('qualitySelect').value;
+      const format = document.getElementById('formatSelect').value;
+
+      if (!videoUrl) {
+        alert('لطفاً لینک ویدیو یا صوت را وارد کنید!');
+        return;
+      }
+
+      const basePath = 'cd /storage/emulated/0/Termux';
+      let command = '';
+
+      if (platform === 'youtube') {
+        if (downloadType === 'video') {
+          command = `yt-dlp "${videoUrl}" --format ${quality} --merge-output-format ${format}`;
+        } else {
+          command = `yt-dlp "${videoUrl}" --extract-audio --audio-format mp3`;
+        }
+      } else if (platform === 'instagram') {
+        if (downloadType === 'video') {
+          command = `yt-dlp "${videoUrl}" --format bestvideo+bestaudio/best --merge-output-format mp4`;
+        } else {
+          command = `yt-dlp "${videoUrl}" --extract-audio --audio-format mp3`;
+        }
+      } else if (platform === 'tiktok') {
+        if (downloadType === 'video') {
+          command = `yt-dlp "${videoUrl}" --format bestvideo+bestaudio/best --recode-video mp4 --postprocessor-args "-y -no-keep-video"`;
+        } else {
+          command = `yt-dlp "${videoUrl}" --extract-audio --audio-format mp3`;
+        }
+      } else if (platform === 'twitter') {
+        if (downloadType === 'video') {
+          command = `yt-dlp "${videoUrl}" --format bestvideo+bestaudio/best --merge-output-format mp4`;
+        } else {
+          command = `yt-dlp "${videoUrl}" --extract-audio --audio-format mp3`;
+        }
+      }
+
+      const fullCommand = `${basePath}\n${command}\nls`;
+      document.getElementById('commandOutput').innerText = fullCommand;
+      document.getElementById('commandSection').style.display = 'block';
+    }
+
+    function copyCommand() {
+      const command = document.getElementById('commandOutput').innerText;
+      navigator.clipboard.writeText(command);
+      const copySection = document.querySelector('.copy-section');
+      copySection.classList.add('copied');
+      setTimeout(() => copySection.classList.remove('copied'), 1000);
+    }
+
+    function shareCommand() {
+      const command = document.getElementById('commandOutput').innerText;
+      if (navigator.share) {
+        navigator.share({
+          text: command,
+          title: 'دستور دانلود'
+        });
+      } else {
+        alert('مرورگر شما از قابلیت شیر پشتیبانی نمی‌کند. لطفاً دستور را کپی کنید.');
+      }
+      const shareSection = document.querySelector('.share-section');
+      shareSection.classList.add('shared');
+      setTimeout(() => shareSection.classList.remove('shared'), 1000);
+    }
+  </script>
+</body>
+</html>

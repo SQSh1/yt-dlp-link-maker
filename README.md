@@ -38,6 +38,16 @@ This means you must be logged in or pass a CAPTCHA to download the video.
 - Select **Export cookies to cookies.txt**.
 - Save the `cookies.txt` file.
   ---
+  ### ✅ 3️⃣ Transfer Cookies to Your Phone (Optional)
+  If you exported cookies on a PC:
+- Copy the file to your phone (for example, to `/storage/emulated/0/Termux`).
+  ---
+  ### ✅ 4️⃣ Run yt-dlp with Cookies
+  Run the command in Termux or your terminal:
+
+```bash
+yt-dlp --cookies /storage/emulated/0/Termux/cookies.txt "YOUR-VIDEO-LINK" --merge-output-format mp4
+```
 ## 📸 Screenshots
 Here are some screenshots showcasing the tool in action:
 

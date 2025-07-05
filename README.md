@@ -86,16 +86,6 @@ Here are some screenshots showcasing the tool in action:
 *Termux terminal showing the successful completion of the download process.*
 ---
 
-## ✨ Features
-
-- Generate `yt-dlp` commands for downloading videos, playlists, or audio  
-- Choose output format (video or audio only)  
-- Automatically convert to MP3 format  
-- Copy or share the generated command  
-- Save files to an accessible path in internal storage  
-
----
-
 ## 📋 Prerequisites
 
 Before using the tool, ensure the following are installed in Termux:

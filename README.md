@@ -32,7 +32,12 @@ This means you must be logged in or pass a CAPTCHA to download the video.
 - Install [Kiwi Browser](https://play.google.com/store/apps/details?id=com.kiwibrowser.browser).  
 - Open [Chrome Web Store](https://chrome.google.com/webstore) and install the same extensions.
   ---
-  
+  ### ✅ 2️⃣ Export Your Cookies
+  - Log in to [YouTube](https://youtube.com) (make sure you’re signed in).
+- Click the extension icon.
+- Select **Export cookies to cookies.txt**.
+- Save the `cookies.txt` file.
+  ---
 ## 📸 Screenshots
 Here are some screenshots showcasing the tool in action:
 

@@ -85,7 +85,6 @@ Here are some screenshots showcasing the tool in action:
 ![Termux Download Complete](screenshots/IMG_2025-06-10-09-11-05-min.jpg)  
 *Termux terminal showing the successful completion of the download process.*
 ---
-
 ## 📋 Prerequisites
 
 Before using the tool, ensure the following are installed in Termux:

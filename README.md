@@ -15,7 +15,8 @@ With this method, you can download any video **without CAPTCHA or “Sign in” 
 Sometimes YouTube shows the message:  
 **“Sign in to confirm you’re not a bot.”**  
 This means you must be logged in or pass a CAPTCHA to download the video.
-
+---
+## ⚙️ Quick Solution
 ## 📸 Screenshots
 Here are some screenshots showcasing the tool in action:
 

@@ -5,14 +5,16 @@
 🔗 [English Version🇮🇷](README.fa.md)
 
 ## ⚠️ Important Security Notes
-
 - 🔑 Your cookies are like the key to your account — **never share them** with anyone!
 - ⏳ Cookies have an expiration date — if you get the error again, export a fresh cookies file.
 - ✅ This method is safe and legal — it works just like watching the video in your own browser.
 
 With this method, you can download any video **without CAPTCHA or “Sign in” errors**!
 
-
+## 📌 🚩 Fixing `Sign in to confirm you’re not a bot` Error
+Sometimes YouTube shows the message:  
+**“Sign in to confirm you’re not a bot.”**  
+This means you must be logged in or pass a CAPTCHA to download the video.
 
 ## 📸 Screenshots
 Here are some screenshots showcasing the tool in action:

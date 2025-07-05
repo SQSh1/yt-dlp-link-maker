@@ -4,6 +4,14 @@
 
 🔗 [Persian Version🇮🇷](README.fa.md)
 
+## Prerequisites and Installation
+Run the following commands in Termux:
+```bash
+   termux-setup-storage
+   pkg update && pkg upgrade
+   pkg install python
+   pip install --upgrade yt-dlp
+```
 ## ⚠️ Important Security Notes
 - 🔑 Your cookies are like the key to your account — **never share them** with anyone!
 - ⏳ Cookies have an expiration date — if you get the error again, export a fresh cookies file.

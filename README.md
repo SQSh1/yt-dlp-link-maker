@@ -4,7 +4,7 @@
 
 🔗 [Persian Version🇮🇷](README.fa.md)
 
-## Prerequisites and Installation
+** Prerequisites and Installation **
 Run the following commands in Termux:
 ```bash
    termux-setup-storage

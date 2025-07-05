@@ -17,6 +17,22 @@ Sometimes YouTube shows the message:
 This means you must be logged in or pass a CAPTCHA to download the video.
 ---
 ## ⚙️ Quick Solution
+✅ The only reliable solution is to use your browser cookies:  
+1️⃣ Log in to YouTube with your account.  
+2️⃣ Export your browser cookies.  
+3️⃣ Pass the cookies to yt-dlp.
+---
+## 🧩 Step-by-Step Guide
+### ✅ 1️⃣ Install a Cookie Export Extension
+🔹 **PC:**  
+- Use **Chrome**, **Edge**, or **Firefox**.  
+- Install [Get cookies.txt](https://chrome.google.com/webstore/detail/get-cookiestxt/hnimpnehoodheedghdeeijklkeaacjfo)  
+  or [EditThisCookie](https://chrome.google.com/webstore/detail/editthiscookie/fngmhnnpilhplaeedifhccceomclgfbg).
+  🔹 **Android (Mobile):**  
+- Install [Kiwi Browser](https://play.google.com/store/apps/details?id=com.kiwibrowser.browser).  
+- Open [Chrome Web Store](https://chrome.google.com/webstore) and install the same extensions.
+  ---
+  
 ## 📸 Screenshots
 Here are some screenshots showcasing the tool in action:
 

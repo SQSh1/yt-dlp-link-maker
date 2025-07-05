@@ -1,6 +1,17 @@
 ## 🎬 yt-dlp Link Generator for Termux
 
 **yt-dlp Link Generator** is a simple and user-friendly tool that helps you automatically generate `yt-dlp` commands to download videos or audio from YouTube within the Termux environment. Designed with an easy-to-use interface, this tool enhances the downloading experience for Android users.
+
+## ⚠️ Important Security Notes
+
+- 🔑 Your cookies are like the key to your account — **never share them** with anyone!
+- ⏳ Cookies have an expiration date — if you get the error again, export a fresh cookies file.
+- ✅ This method is safe and legal — it works just like watching the video in your own browser.
+
+With this method, you can download any video **without CAPTCHA or “Sign in” errors**!
+
+
+
 ## 📌 🚩 Fixing `Sign in to confirm you’re not a bot` Error
 
 Sometimes YouTube shows the message:  

@@ -65,7 +65,7 @@
 در ترموکس یا ترمینال دستور را اجرا کنید:
 ```bash
 yt-dlp --cookies /storage/emulated/0/Termux/cookies.txt "لینک-ویدیو" --merge-output-format mp4
-
+```
  
 🔗 [English Version🇬🇧](README.md)
 

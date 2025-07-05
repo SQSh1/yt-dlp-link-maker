@@ -12,6 +12,11 @@ Run the following commands in Termux:
    pkg install python
    pip install --upgrade yt-dlp
 ```
+Before use, make sure the following tools are installed in Termux:
+
+- `yt-dlp`: to download content from YouTube 
+- `termux-storage`: to access internal storage
+  ---
 ## ⚠️ Important Security Notes
 - 🔑 Your cookies are like the key to your account — **never share them** with anyone!
 - ⏳ Cookies have an expiration date — if you get the error again, export a fresh cookies file.

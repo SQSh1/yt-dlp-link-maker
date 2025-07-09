@@ -78,3 +78,19 @@ Here are some screenshots showcasing the tool in action:
 ![Termux Download Complete](screenshots/IMG_2025-06-10-09-11-05-min.jpg)  
 *Termux terminal showing the successful completion of the download process.*
 ---
+
+## 📌 About
+
+This tool was designed by **[SQ]** to make downloading from YouTube on Android easier. If you like the project, support us by giving the repository a ⭐!
+
+---
+
+## 📜 License
+
+This project is released under the [MIT License](https://opensource.org/licenses/MIT).
+
+---
+
+## ⭐ Support
+
+If you found this tool useful, please give the repository a star and share it with your friends! 🌟

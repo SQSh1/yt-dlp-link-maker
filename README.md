@@ -81,7 +81,7 @@ Here are some screenshots showcasing the tool in action:
 
 ## 📌 About
 
-This tool was designed by **[SQ]** to make downloading from YouTube on Android easier. If you like the project, support us by giving the repository a ⭐!
+This tool was designed by **[SQ]** to make downloading from YouTube on Android easier. If you like the project, support me by giving the repository a ⭐!
 
 ---
 

@@ -88,3 +88,4 @@ This project is released under the [MIT License](https://opensource.org/licenses
 ## ⭐ Support
 
 This is a simple tool designed for Android to download videos from YouTube, Twitter, Instagram, and TikTok. If you like it, feel free to share it with your friends and support me by giving it a ⭐ star!
+---

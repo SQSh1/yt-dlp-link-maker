@@ -7,10 +7,20 @@
 1. **Prerequisites and Installation**
 Run the following commands in Termux:
 ```bash
-   termux-setup-storage && yt-dlp -o "$HOME/storage/downloads/%(playlist_title)s/%(title)s.%(ext)s" -f bestvideo+bestaudio --merge-output-format mp4 "VIDEO_URL"
+   termux-setup-storage && mkdir -p /storage/emulated/0/Termux && yt-dlp -o "/storage/emulated/0/Termux/%(playlist_title,playlist)s/%(title)s.%(ext)s" -f bestvideo+bestaudio/best --merge-output-format mp4 "VIDEO_URL"
    pkg update && pkg upgrade
    pkg install python
    pip install --upgrade yt-dlp
+```
+## 📂 All downloads will be here:
+```
+Internal Storage
+ └── Termux
+      ├── Video1.mp4
+      ├── Video2.mp4
+      └── Playlist Name/
+            ├── ep1.mp4
+            └── ep2.mp4
 ```
 Before use, make sure the following tools are installed in Termux:
 

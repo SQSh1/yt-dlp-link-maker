@@ -16,11 +16,11 @@ Run the following commands in Termux:
 ---
 - Internal Storage
 - └── Termux
--  ├── Video1.mp4
--  ├── Video2.mp4
--  └── Playlist Name/
--  ├── ep1.mp4
--  └── ep2.mp4
+-   ├── Video1.mp4
+-   ├── Video2.mp4
+-   └── Playlist Name/
+-    -  ├── ep1.mp4
+-  --   └── ep2.mp4
 ---
 Before use, make sure the following tools are installed in Termux:
 

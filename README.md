@@ -7,6 +7,7 @@
 1. **Prerequisites and Installation**
 Run the following commands in Termux:
 ```bash
+   termux-setup-storage && yt-dlp -o $HOME/storage/downloads/%(title)s.%(ext)s -f bestvideo+bestaudio --merge-output-format mp4 "VIDEO_URL"
    termux-setup-storage
    pkg update && pkg upgrade
    pkg install python

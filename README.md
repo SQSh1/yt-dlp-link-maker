@@ -20,7 +20,7 @@ Run the following commands in Termux:
 -   ├── Video2.mp4
 -   └── Playlist Name/
 -    -  ├── ep1.mp4
--  --   └── ep2.mp4
+-    -  └── ep2.mp4
 ---
 Before use, make sure the following tools are installed in Termux:
 

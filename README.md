@@ -13,7 +13,7 @@ Run the following commands in Termux:
    pip install --upgrade yt-dlp
 ```
 ## 📂 All downloads will be here:
-```
+---
 Internal Storage
  └── Termux
       ├── Video1.mp4
@@ -21,7 +21,7 @@ Internal Storage
       └── Playlist Name/
             ├── ep1.mp4
             └── ep2.mp4
-```
+---
 Before use, make sure the following tools are installed in Termux:
 
 - `yt-dlp`: to download content from YouTube 
